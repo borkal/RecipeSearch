@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/config
+/.vs/RecipeSearch/v15/Server/sqlite3
+/Model/obj/Debug
+/RecipeSearch/bin
+/Model/bin/Debug
