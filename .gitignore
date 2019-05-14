@@ -11,3 +11,5 @@
 /TestConsole/bin/Debug
 /TestConsole/obj/Debug
 /TestConsole
+/.vs
+/Model/obj/Release

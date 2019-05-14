@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -10,9 +13,12 @@ namespace Model.Utilities.Parsers
 {
     public class FantazjeMagdyKParser : IParser
     {
-        private HtmlDocument RecipeHtmlDocument { get; set; }
-        private string RecipeToProcessUrl { get; set; }
-        private HtmlWeb RecipeWebDocument { get; set; }
+        private static string DivBodyPattern = "//*[@class='post-body entry-content']";
+        public Dictionary<int, string> ErrorRecipesList = new Dictionary<int, string>();
+        public int RecipeId { get; set; }
+        private HtmlDocument RecipeHtmlDocument { get; }
+        private string RecipeToProcessUrl { get; }
+        private HtmlWeb RecipeWebDocument { get; }
 
         public FantazjeMagdyKParser(string url)
         {
@@ -30,28 +36,69 @@ namespace Model.Utilities.Parsers
 
         }
 
-        public void GetDescription()
+        public List<string> GetDescription()
         {
-            var documentNode = RecipeHtmlDocument.DocumentNode.SelectNodes("//div/*");
-            //var documentNode1 = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='post-body entry-content']");
+            var descriptionList = new List<string>();
+            bool process = true;
+
+            var ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//text()[preceding-sibling::span[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>'] and following-sibling::a]");
+
+            if (ingredientDescriptionElements == null)
+            {
+                ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[preceding-sibling::div/b[text()='wykonanie:'] and following-sibling::div[text()='\nSmacznego!!']]/text()");
+                if (ingredientDescriptionElements == null)
+                {
+                    ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[preceding-sibling::div/b[starts-with(.,'wykonanie')] and following-sibling::div[text()='\nSmacznego!!']]/text()");
+                }
+
+                if (ingredientDescriptionElements == null)
+                {
+                    ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
+                    process = false;
+                }
+            }
+
+            if (process)
+            {
+                foreach (var element in ingredientDescriptionElements.Where(x => x.InnerHtml != "\n"))
+                {
+                    descriptionList.Add(element.InnerText);
+                }
+            }
+
+
+            return descriptionList;
         }
 
-        public string GetIngredients(string rec)
+
+        public List<string> GetIngredients()
         {
-            var recipeUrl = rec;
             var ingredientList = new List<string>();
-            var errorlist = "";
-            var ingredientLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='post-body entry-content']//ul/li");
+            bool process = true;
+
+            var ingredientLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//ul/li");
+
             if (ingredientLiElements == null)
             {
-                errorlist += recipeUrl;
+                ingredientLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}/text()[preceding-sibling::span[text() ='składniki:'] and following-sibling::span]");
+                if (ingredientLiElements == null)
+                {
+                    ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
+                    process = false;
+                }
             }
-            //foreach (var element in ingredientLiElements.Elements())
-            //{
-            //    ingredientList.Add(element.InnerText);
-            //}
 
-            return errorlist;
+            if (process)
+            {
+                foreach (var element in ingredientLiElements.Where(x => x.InnerHtml != "\n"))
+                {
+                    ingredientList.Add(element.InnerText.Replace("&#189;", "1/2")
+                                                        .Replace("&#8211;", "-")
+                                                        .Replace("\n", ""));
+                }
+            }
+
+            return ingredientList;
         }
 
         public bool CheckIfImageExist(string imgUrl)
@@ -71,6 +118,7 @@ namespace Model.Utilities.Parsers
             return process;
 
         }
+
 
     }
 }

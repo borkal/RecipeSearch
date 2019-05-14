@@ -10,8 +10,8 @@ namespace Model.Utilities.Parsers
     {
         void GetImage();
         void GetTitle();
-        void GetDescription();
-        string GetIngredients(string rec);
+        List<string> GetDescription();
+        List<string> GetIngredients();
 
     }
 }
