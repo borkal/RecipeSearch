@@ -47,6 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\DishDao.cs" />
+    <Compile Include="DataAccess\FeatureDao.cs" />
+    <Compile Include="DataAccess\IDishDao.cs" />
+    <Compile Include="DataAccess\IFeatureDao.cs" />
     <Compile Include="DataAccess\IIngredientDao.cs" />
     <Compile Include="DataAccess\IngredientDao.cs" />
     <Compile Include="DataAccess\IRecipeDao.cs" />
@@ -60,12 +64,16 @@
     <Compile Include="Domain\Recipe.cs" />
     <Compile Include="Domain\RecipeSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ModelMapper\DishMapper.cs" />
+    <Compile Include="Utilities\ModelMapper\FeatureMapper.cs" />
     <Compile Include="Utilities\ModelMapper\IngredientMapper.cs" />
     <Compile Include="Utilities\ModelMapper\RecipeMapper.cs" />
     <Compile Include="Utilities\Odbc\OdbcClient.cs" />
     <Compile Include="Utilities\Odbc\OdbcManager.cs" />
     <Compile Include="Utilities\Parsers\FantazjeMagdyKParser.cs" />
     <Compile Include="Utilities\Parsers\IParser.cs" />
+    <Compile Include="Utilities\QueryBuilder\DishQueryBuilder.cs" />
+    <Compile Include="Utilities\QueryBuilder\FeatureQueryBuilder.cs" />
     <Compile Include="Utilities\QueryBuilder\IngredientQueryBuilder.cs" />
     <Compile Include="Utilities\QueryBuilder\RecipeQueryBuilder.cs" />
   </ItemGroup>

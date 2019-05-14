@@ -23,7 +23,7 @@ namespace Model.Utilities.ModelMapper
         public Recipe SelectRecipeByRecipeIdMapper(OdbcDataReader dataReader)
         {
             var recipe = new Recipe();
-            while (dataReader.Read())
+            while (dataReader.Read()) 
             {
 
                 recipe.RecipeId = dataReader.GetInt32(0);

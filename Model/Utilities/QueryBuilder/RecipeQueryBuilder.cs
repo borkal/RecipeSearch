@@ -35,7 +35,7 @@ namespace Model.Utilities.QueryBuilder
             return query;
         }
 
-        public string SelecAllRecipeNamesAndIds()
+        public string SelecAllRecipeNamesAndIds() //testowa metoda
         {
             var query = "SELECT " +
                         "R.id," +

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Model.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model.Domain;
 
 namespace Model.DataAccess
 {
-    public interface IIngredientDao
+    public interface IDishDao
     {
-        List<Ingredient> SelectAllIngredientsByRecipeId(int recipeId);
+        List<Dish> SelectRecipeDishByRecipeId(int recipeId);
     }
 }

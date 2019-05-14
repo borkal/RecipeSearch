@@ -15,10 +15,11 @@ namespace Model.Domain
         public bool IngredientCitrus { get; set; }
         public bool IngredientNut { get; set; }
         public bool IngredientSugar { get; set; }
-        public int IngredientMushroom { get; set; }
+        public bool IngredientMushroom { get; set; }
         public bool IngredientGluten { get; set; }
         public bool IngredientCowMilk { get; set; }
         public bool IngredientWheat { get; set; }
+        public bool IngredientEgg { get; set; }
         public bool IngredientVegetarian { get; set; }
         public IngredientCategory IngredientCategory { get; set; }
         public string IngredientAlternativeName { get; set; }
