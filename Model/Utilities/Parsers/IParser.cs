@@ -8,7 +8,7 @@ namespace Model.Utilities.Parsers
 {
     interface IParser
     {
-        void GetImage();
+        string GetImage();
         void GetTitle();
         List<string> GetDescription();
         List<string> GetIngredients();

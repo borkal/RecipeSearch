@@ -27,13 +27,13 @@ namespace Model.Utilities.Parsers
             RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);
         }
 
-        public void GetImage()
+        public string GetImage()
         {
-
+            throw new NotImplementedException();
         }
         public void GetTitle()
         {
-
+            
         }
 
         public List<string> GetDescription()

@@ -22,5 +22,12 @@ namespace Model.Domain
         public List<Ingredient> RecipeIngredientsList { get; set; }
         //parsery do sprawdzenia, jak pobierają przepisy?? skąd opis przepisów, kroki?
         public List<Feature> RecipeFeature { get; set; }
+        public List<string> RecipeDescriptionListToDisplay { get; set; }
+        public List<string> RecipeIngredientsListToDisplay { get; set; }
+
+        public override string ToString() //nie wiem czy potrzebne, do sprawdzenia
+        {
+            return base.ToString();
+        }
     }
 }

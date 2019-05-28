@@ -72,6 +72,8 @@
     <Compile Include="Utilities\Odbc\OdbcManager.cs" />
     <Compile Include="Utilities\Parsers\FantazjeMagdyKParser.cs" />
     <Compile Include="Utilities\Parsers\IParser.cs" />
+    <Compile Include="Utilities\Parsers\KwestiaSmakuParser.cs" />
+    <Compile Include="Utilities\Parsers\MojeDietetyczneFanaberieParser.cs" />
     <Compile Include="Utilities\QueryBuilder\DishQueryBuilder.cs" />
     <Compile Include="Utilities\QueryBuilder\FeatureQueryBuilder.cs" />
     <Compile Include="Utilities\QueryBuilder\IngredientQueryBuilder.cs" />

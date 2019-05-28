@@ -42,6 +42,13 @@ namespace Model.DataAccess
             return _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
         }
 
+        public List<Recipe> SelectRecipesByBlogName(string blogName)
+        {
+            var query = _recipeQuery.SelectRecipesByBlogName(blogName);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRecipesByBlogNameMapper(dbReader);
+        }
+
 
         //olej ta metode narazie
         public Dictionary<int, string> SelecAllRecipeNamesAndIds(string searchText)

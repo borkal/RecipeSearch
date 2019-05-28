@@ -39,6 +39,28 @@ namespace Model.Utilities.ModelMapper
             return recipe;
         }
 
+        public List<Recipe> SelectRecipesByBlogNameMapper(OdbcDataReader dataReader)
+        {
+            var recipeList = new List<Recipe>();
+
+            while (dataReader.Read())
+            {
+                Recipe recipeToList = new Recipe();
+                recipeToList.RecipeId = dataReader.GetInt32(0);
+                recipeToList.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
+                recipeToList.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
+                recipeToList.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
+                recipeToList.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
+                recipeToList.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
+                recipeToList.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
+
+                recipeList.Add(recipeToList);
+
+            }
+
+            return recipeList;
+        }
+
         public Dictionary<int, string> SelecAllRecipeNamesAndIds(OdbcDataReader dataReader)
         {
             var recipeIdNameList = new Dictionary<int, string>();
