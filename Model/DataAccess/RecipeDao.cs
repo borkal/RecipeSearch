@@ -28,11 +28,18 @@ namespace Model.DataAccess
             _recipeQuery = recipeQueryBuilder;
             _recipeMapper = recipeMapper;
         }
-        public List<int> SearchRecipeIdsBasedOnSearchText(string searchText)
+        public Dictionary<int, string> SearchRecipeIdsBasedOnSearchText(string searchText)
         {
             var query = _recipeQuery.SearchRecipeIdsBasedOnSearchText(searchText);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _recipeMapper.SearchRecipeIdsBasedOnSearchTextMapper(dbReader);
+        }
+
+        public List<Recipe> SelectAlLRecipesBySearchText(string searchText)
+        {
+            var query = _recipeQuery.SelectAlLRecipesBySearchText(searchText);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectAlLRecipesBySearchText(dbReader);
         }
 
         public Recipe SelectRecipeByRecipeId(int recipeId)
@@ -40,6 +47,14 @@ namespace Model.DataAccess
             var query = _recipeQuery.SelectRecipeByRecipeId(recipeId);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
+        }
+
+        public string SelectBlogNameByRecipeId(int recipeId)
+        {
+            var query = _recipeQuery.SelectBlogNameByRecipeId(recipeId);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectBlogNameByRecipeId(dbReader);
+
         }
 
         public List<Recipe> SelectRecipesByBlogName(string blogName)

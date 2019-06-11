@@ -9,7 +9,9 @@ namespace Model.DataAccess
 {
     public interface IRecipeDao
     {
-        List<int> SearchRecipeIdsBasedOnSearchText(string searchText);
+        Dictionary<int, string> SearchRecipeIdsBasedOnSearchText(string searchText);
         Recipe SelectRecipeByRecipeId(int recipeId);
+        string SelectBlogNameByRecipeId(int recipeId);
+        List<Recipe> SelectAlLRecipesBySearchText(string searchText);
     }
 }

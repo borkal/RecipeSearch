@@ -19,21 +19,31 @@ namespace Model.Utilities.Parsers
         private HtmlDocument RecipeHtmlDocument { get; }
         private string RecipeToProcessUrl { get; }
         private HtmlWeb RecipeWebDocument { get; }
+        public bool Process { get; set; } = true;
 
         public FantazjeMagdyKParser(string url)
         {
             RecipeToProcessUrl = url;
             RecipeWebDocument = new HtmlWeb();
-            RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);
+            try
+            {
+                RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Process = false;
+
+            }
         }
 
-        public string GetImage()
+        public void GetImage()
         {
-            throw new NotImplementedException();
+
         }
         public void GetTitle()
         {
-            
+
         }
 
         public List<string> GetDescription()
@@ -41,14 +51,31 @@ namespace Model.Utilities.Parsers
             var descriptionList = new List<string>();
             bool process = true;
 
-            var ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//text()[preceding-sibling::span[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>'] and following-sibling::a]");
+            //pattern #1
+            var ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"//*[@class='post-body entry-content']//text()[preceding-sibling::span[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>'] and following-sibling::a]");
 
             if (ingredientDescriptionElements == null)
             {
-                ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[preceding-sibling::div/b[text()='wykonanie:'] and following-sibling::div[text()='\nSmacznego!!']]/text()");
+                //pattern #2
+                ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"//*[@class='post-body entry-content']//*[preceding-sibling::div/b[text()='wykonanie:'] and following-sibling::div[text()='\nSmacznego!!']]/text()");
                 if (ingredientDescriptionElements == null)
                 {
-                    ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[preceding-sibling::div/b[starts-with(.,'wykonanie')] and following-sibling::div[text()='\nSmacznego!!']]/text()");
+                    //pattern #2 - probably better? it may find more descriptions than patterh #2 but data could be wrong
+                    ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"//*[@class='post-body entry-content']//*[preceding-sibling::div/b[starts-with(.,'wykonanie')] and following-sibling::div[text()='\nSmacznego!!']]/text()");
+                    if (ingredientDescriptionElements == null)
+                    {
+                        //patter#3
+                        ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"//*[@class='post-body entry-content']//text()[preceding-sibling::span[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>']]");
+                    }
+
+                    //pattern#4
+                    ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"//*[@class='post-body entry-content']//*[preceding-sibling::p/b[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>'] and following-sibling::a]/text()");
+                    if (ingredientDescriptionElements == null)
+                    {
+                        //test paterns that went wrong
+                        ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}");
+                        ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[contains(text(),'wykonanie:')]"); //[preceding-sibling::*[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>']]");
+                    }
                 }
 
                 if (ingredientDescriptionElements == null)
@@ -60,12 +87,13 @@ namespace Model.Utilities.Parsers
 
             if (process)
             {
-                foreach (var element in ingredientDescriptionElements.Where(x => x.InnerHtml != "\n"))
+                foreach (var element in ingredientDescriptionElements.Where(x => x.InnerHtml != "\n" || x.InnerHtml.Length != 0))
                 {
-                    descriptionList.Add(element.InnerText);
+                    descriptionList.Add(element.InnerText.TrimStart(':')
+                                                         .Replace("\n", "")
+                                                         .Replace("&#189;", "1/2"));
                 }
             }
-
 
             return descriptionList;
         }
@@ -109,6 +137,7 @@ namespace Model.Utilities.Parsers
             {
                 var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
                 process = httpResponse.StatusCode == HttpStatusCode.OK;
+                httpResponse.Close();
             }
             catch (Exception e)
             {
@@ -119,6 +148,9 @@ namespace Model.Utilities.Parsers
 
         }
 
-
+        string IParser.GetImage()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

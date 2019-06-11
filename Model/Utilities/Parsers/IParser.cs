@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.Utilities.Parsers
 {
-    interface IParser
+    public interface IParser
     {
         string GetImage();
         void GetTitle();

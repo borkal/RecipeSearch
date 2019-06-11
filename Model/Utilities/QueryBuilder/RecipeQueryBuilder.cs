@@ -10,12 +10,17 @@ namespace Model.Utilities.QueryBuilder
     {
         public string SearchRecipeIdsBasedOnSearchText(string searchString)
         {
-            var query = "SELECT " +
-                        "R.id " +
-                        "FROM recipe R " +
-                        "LEFT JOIN recipeelement RE ON R.Id = RE.recipe_id " +
-                        "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
-                        $"WHERE R.name like '%{searchString}%' OR I.name like '%{searchString}%'";
+            var query =
+                "SELECT R.id, " +
+                "RS.name " +
+                "FROM recipe R " +
+                "LEFT JOIN recipesource RS on R.source_id = RS.id " +
+                "LEFT JOIN recipeelement RE ON R.Id = RE.recipe_id " +
+                "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
+                "WHERE R" +"S.id in (1, 3, 5) " +
+               $"AND lower(I.name) like lower('%{searchString}%') " +
+               $"OR lower(R.name) like lower('%{searchString}%') " +
+                "GROUP BY R.id, RS.id";
 
             return query;
         }
@@ -29,8 +34,11 @@ namespace Model.Utilities.QueryBuilder
                         "R.image," +
                         "R.name," +
                         "R.url," +
-                        "R.status " +
-                        "FROM recipe R " +
+                        "R.status, " +
+                        "RS.canonicalurl, " +
+                        "RS.name " + 
+                        "FROM recipe R  " +
+                        "LEFT JOIN recipesource RS on R.source_id = RS.id " +
                         $"WHERE R.id = {recipeId}";
             return query;
         }
@@ -71,6 +79,40 @@ namespace Model.Utilities.QueryBuilder
                         "R.name " +
                         "FROM recipe R";
 
+            return query;
+        }
+
+        public string SelectBlogNameByRecipeId(int recipeId)
+        {
+            var query = "SELECT RS.name " +
+                        "from recipe R " +
+                        "left join recipesource RS on R.source_id = RS.id " +
+                       $"where R.id = {recipeId}";
+            return query;
+
+        }
+
+        public string SelectAlLRecipesBySearchText(string searchText)
+        {
+            var query = "SELECT " + 
+            "R.id, " +
+            "R.comments, " +
+            "R.createdate, " +
+            "R.image, " +
+            "R.name, " +
+            "R.url, " +
+            "R.status, " +
+            "RS.canonicalurl, " +
+            "RS.name " +
+            "FROM recipe R " +
+            "LEFT JOIN recipesource RS on R.source_id = RS.id " +
+            "LEFT JOIN recipeelement RE on R.id = RE.recipe_id " +
+            "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
+            "WHERE RS.id in (1, 3, 5) " +
+            $"AND lower(I.name) like lower('%{searchText}%') " +
+            $"OR lower(R.name) like lower('%{searchText}%') " +
+            "GROUP BY R.id, RS.id";
+                
             return query;
         }
     }

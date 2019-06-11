@@ -19,6 +19,8 @@ namespace Model.Domain
         public int RecipeAuthorId { get; set; }
         public RecipeSource RecipeSourceId { get; set; }
         public int RecipeStatus { get; set; }
+        public string Blog_Url { get; set; }
+        public string Blog { get; set; }
         public List<Ingredient> RecipeIngredientsList { get; set; }
         //parsery do sprawdzenia, jak pobierają przepisy?? skąd opis przepisów, kroki?
         public List<Feature> RecipeFeature { get; set; }
