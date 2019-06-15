@@ -74,9 +74,9 @@ namespace RecipeSearch.RecipeService
             {
                 Blog = recipe.Blog,
                 Blog_Url = recipe.Blog_Url,
-                Description = blog.GetDescription(),
+                Description = blog.Process ? blog.GetDescription() : new List<string>(),
                 Image_Url = recipe.RecipeImage,
-                Ingredients = blog.GetIngredients(),
+                Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
                 Id = recipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
                 Title = recipe.RecipeName

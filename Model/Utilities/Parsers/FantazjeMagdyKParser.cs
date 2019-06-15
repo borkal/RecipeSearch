@@ -73,14 +73,13 @@ namespace Model.Utilities.Parsers
                     if (ingredientDescriptionElements == null)
                     {
                         //test paterns that went wrong
-                        ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}");
                         ingredientDescriptionElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}//*[contains(text(),'wykonanie:')]"); //[preceding-sibling::*[text() ='wykonanie:' or text() ='wykonanie' or text() ='wykonanie:<br>']]");
                     }
                 }
 
                 if (ingredientDescriptionElements == null)
                 {
-                    ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
+                    //ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
                     process = false;
                 }
             }
@@ -111,7 +110,7 @@ namespace Model.Utilities.Parsers
                 ingredientLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyPattern}/text()[preceding-sibling::span[text() ='składniki:'] and following-sibling::span]");
                 if (ingredientLiElements == null)
                 {
-                    ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
+                    //ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
                     process = false;
                 }
             }
