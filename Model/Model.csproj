@@ -63,6 +63,7 @@
     <Compile Include="Domain\IngredientCategory.cs" />
     <Compile Include="Domain\Recipe.cs" />
     <Compile Include="Domain\RecipeSource.cs" />
+    <Compile Include="Enums\Blogs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ModelMapper\DishMapper.cs" />
     <Compile Include="Utilities\ModelMapper\FeatureMapper.cs" />

@@ -28,12 +28,6 @@ namespace Model.DataAccess
             _recipeQuery = recipeQueryBuilder;
             _recipeMapper = recipeMapper;
         }
-        public Dictionary<int, string> SearchRecipeIdsBasedOnSearchText(string searchText)
-        {
-            var query = _recipeQuery.SearchRecipeIdsBasedOnSearchText(searchText);
-            var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SearchRecipeIdsBasedOnSearchTextMapper(dbReader);
-        }
 
         public List<Recipe> SelectAlLRecipesBySearchText(string searchText)
         {
@@ -49,33 +43,23 @@ namespace Model.DataAccess
             return _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
         }
 
-        public string SelectBlogNameByRecipeId(int recipeId)
+        public List<Recipe> SelectRecipesByBlogId(int blogId)
         {
-            var query = _recipeQuery.SelectBlogNameByRecipeId(recipeId);
+            var query = _recipeQuery.SelectRecipesByBlogId(blogId);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SelectBlogNameByRecipeId(dbReader);
-
+            return _recipeMapper.SelectRecipesByBlogIdMapper(dbReader);
         }
 
-        public List<Recipe> SelectRecipesByBlogName(string blogName)
+        public void InsertRecipeIngredient(int recipeId, string ingredientText)
         {
-            var query = _recipeQuery.SelectRecipesByBlogName(blogName);
-            var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SelectRecipesByBlogNameMapper(dbReader);
+            var query = _recipeQuery.InsertRecipeIngredient(recipeId, ingredientText);
+            _odbcManager.ExecuteUpdateQuery(query);
         }
 
-
-        //olej ta metode narazie
-        public Dictionary<int, string> SelecAllRecipeNamesAndIds(string searchText)
+        public void InsertRecipeDescription(int recipeId, string descriptionText, int orderId)
         {
-            var query = _recipeQuery.SelecAllRecipeNamesAndIds();
-            var dbReader = _odbcManager.ExecuteReadQuery(query);
-            var mapper = _recipeMapper.SelecAllRecipeNamesAndIds(dbReader);
-
-            var reg = new Regex($".*{searchText}.*", RegexOptions.IgnoreCase);
-            var test = mapper.Where(x => reg.IsMatch(x.Value));
-
-            return (Dictionary<int, string>)mapper.Where(x => reg.IsMatch(x.Value));
+            var query = _recipeQuery.InsertRecipeDescription(recipeId, descriptionText, orderId);
+            _odbcManager.ExecuteUpdateQuery(query);
         }
     }
 }

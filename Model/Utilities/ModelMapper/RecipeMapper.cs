@@ -41,7 +41,7 @@ namespace Model.Utilities.ModelMapper
             return recipe;
         }
 
-        public List<Recipe> SelectRecipesByBlogNameMapper(OdbcDataReader dataReader)
+        public List<Recipe> SelectRecipesByBlogIdMapper(OdbcDataReader dataReader)
         {
             var recipeList = new List<Recipe>();
 

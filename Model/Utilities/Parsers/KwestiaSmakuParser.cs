@@ -20,6 +20,8 @@ namespace Model.Utilities.Parsers
         private string RecipeToProcessUrl { get; }
         private HtmlWeb RecipeWebDocument { get; }
         public bool Process { get; set; } = true;
+        public List<string> XpathDescriptionPatternList { get; set; } = new List<string>();
+        public List<string> XpathIngredientsPatternList { get; set; } = new List<string>();
 
         public KwestiaSmakuParser(string url)
         {
@@ -135,6 +137,16 @@ namespace Model.Utilities.Parsers
 
             return process;
 
+        }
+
+        public void InitXpathPatterns()
+        {
+            XpathDescriptionPatternList.Add($"{DivBodyDescriptionPattern}//ul/li");
+            XpathDescriptionPatternList.Add($"{DivBodyDescriptionPattern}//text()[preceding-sibling::span[text() ='Przygotowanie'] and following-sibling::a]");
+            XpathDescriptionPatternList.Add($"{DivBodyDescriptionPattern}//p");
+
+            XpathIngredientsPatternList.Add($"{DivBodyIngredientsPattern}//ul/li");
+            XpathIngredientsPatternList.Add($"{DivBodyIngredientsPattern}/text()[preceding-sibling::span[text() ='składniki:'] and following-sibling::span]");
         }
     }
 }

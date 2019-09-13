@@ -29,8 +29,7 @@ namespace RecipeSearch.RecipeService
         {
             var foundRecipes = _recipeDao.SelectAlLRecipesBySearchText(searchText).Take(count).ToList();
             var recipeList = new List<RecipePreviewRecipeModel>();
-
-            //var result = foundRecipes.GroupBy(x => x.Blog);
+           
             foreach (var recipe in foundRecipes)
             {
                 var recipeModel = new RecipePreviewRecipeModel
