@@ -65,7 +65,8 @@ namespace Model.Utilities.Parsers
             {
                 foreach (var element in descriptionLiElements.Where(x => x.InnerHtml != "\n"))
                 {
-                    descriptionList.Add(element.InnerText.Replace("&nbsp;", " "));
+                    descriptionList.Add(element.InnerText.Replace("&nbsp;", " ")
+                                                         .Replace("\n\t\t", ""));
                 }
             }
 
@@ -109,7 +110,8 @@ namespace Model.Utilities.Parsers
                 {
                     ingredientList.Add(element.InnerText.Replace("&#189;", "1/2")
                                                         .Replace("&#8211;", "-")
-                                                        .Replace("\n", ""));
+                                                        .Replace("\n", "")
+                                                        .Replace("\t\t", ""));
                 }
             }
 
