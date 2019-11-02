@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model.Enums;
 using Model.Utilities.Parsers;
-using RecipeSearch.RecipeService;
+//using RecipeSearch.RecipeService;
 
 namespace ConsoleTest2
 {
@@ -16,11 +16,11 @@ namespace ConsoleTest2
         {
             var recipeDao = new RecipeDao();
 
-            var results = recipeDao.SelectRecipesByBlogId((int) Blogs.FantazjeKulinarneMagdyK);
+            var results = recipeDao.SelectRecipesByBlogId((int) Blogs.KwestiaSmaku);
             foreach (var recipe in results)
             {
                 int orderNumber = 0;
-                var blog = new FantazjeMagdyKParser(recipe.RecipeUrl);
+                var blog = new KwestiaSmakuParser(recipe.RecipeUrl);
                 var ingredients = blog.GetIngredients().Where(x => !string.IsNullOrEmpty(x)).ToList();
                 var description = blog.GetDescription().Where(x => !string.IsNullOrEmpty(x)).ToList();
                 //description.RemoveAt(12);

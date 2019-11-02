@@ -1,0 +1,15 @@
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\obj\Debug\ConsoleTest2.csproj.CoreCompileInputs.cache
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\obj\Debug\ConsoleTest2.csprojAssemblyReference.cache
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\ConsoleTest2.exe.config
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\ConsoleTest2.exe
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\ConsoleTest2.pdb
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\Model.dll
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\log4net.dll
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\Model.pdb
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\bin\Debug\log4net.xml
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\obj\Debug\ConsoleTest2.csproj.CopyComplete
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\obj\Debug\ConsoleTest2.exe
+C:\Users\Dawid\Documents\GitHub\RecipeSearch\ConsoleTest2\obj\Debug\ConsoleTest2.pdb
