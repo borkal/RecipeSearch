@@ -27,11 +27,32 @@ namespace Model.DataAccess
             _dishQuery = dishQueryBuilder;
             _dishMapper = dishMapper;
         }
-        public List<Dish> SelectRecipeDishByRecipeId(int recipeId)
+        //public List<Dish> SelectRecipeDishByRecipeId(int recipeId)
+        //{
+        //    var query = _dishQuery.SelectRecipeDishByRecipeId(recipeId);
+        //    var dbReader = _odbcManager.ExecuteReadQuery(query);
+        //    return _dishMapper.SelectRecipeDishByRecipeIdMapper(dbReader);
+        //}
+
+        public List<Dish> SelectDishes()
         {
-            var query = _dishQuery.SelectRecipeDishByRecipeId(recipeId);
+            var query = _dishQuery.SelectDishes();
             var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _dishMapper.SelectRecipeDishByRecipeIdMapper(dbReader);
+            return _dishMapper.SelectDishes(dbReader);
+        }
+
+        public List<DishSubCategory> SelectDishSubCategories()
+        {
+            var query = _dishQuery.SelectDishSubCategories();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _dishMapper.SelectDishSubCategories(dbReader);
+        }
+
+        public List<DishMainCategory> SelectDishMainCategories()
+        {
+            var query = _dishQuery.SelectDishMainCategories();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _dishMapper.SelectDishMainCategories(dbReader);
         }
     }
 }

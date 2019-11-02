@@ -10,6 +10,6 @@ namespace Model.DataAccess
     public interface IRecipeDao
     {
         Recipe SelectRecipeByRecipeId(int recipeId);
-        List<Recipe> SelectAlLRecipesBySearchText(string searchText);
+        List<Recipe> SelectAlLRecipesBySearchText(string searchText, int[] dishIds, int[] dishSubCategoryIds, int[] dishMainCategoryIds, int[] ingredientIds, int[] ingredientCategoryIds);
     }
 }

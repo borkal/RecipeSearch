@@ -8,7 +8,7 @@ namespace Model.Utilities.QueryBuilder
 {
     public class IngredientQueryBuilder
     {
-        public string SelectAllIngredientsByRecipeId(int recipeId)
+        public string SelectIngredients()
         {
             var query = "SELECT " +
                         "I.id," +
@@ -24,10 +24,24 @@ namespace Model.Utilities.QueryBuilder
                         "I.vegetarian " +
                         "FROM ingredient I " +
                         "LEFT JOIN recipeelement RE ON RE.ingredient_id = I.id " +
-                        "LEFT JOIN recipe R ON R.id = RE.recipe_id " +
-                        $"WHERE R.Id = {recipeId} ";
+                        "LEFT JOIN recipe R ON R.id = RE.recipe_id ";
 
             return query;
+        }
+
+        public string SelectIngriedentCategoires()
+        {
+            return "SELECT " +
+                   "IC.id, " +
+                   "IC.name " +
+                   "FROM ingredientcategory IC";
+        }
+        public string SelectIngriedentCategoiresXref()
+        {
+            return "SELECT " +
+                   "IC.ingredient_id, " +
+                   "IC.categories_id " +
+                   "FROM ingredient_ingredientcategory IC";
         }
     }
 }

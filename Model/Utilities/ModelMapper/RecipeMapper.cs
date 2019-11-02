@@ -34,7 +34,8 @@ namespace Model.Utilities.ModelMapper
                 recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
                 recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
                 recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
-                recipe.Blog = dataReader[8] == DBNull.Value ? "" : dataReader.GetString(8);
+                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : dataReader.GetInt32(8);
+                recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
 
             }
 
@@ -92,22 +93,48 @@ namespace Model.Utilities.ModelMapper
             var recipeList = new List<Recipe>();
             while (dataReader.Read())
             {
-                var recipe = new Recipe();
-                recipe.RecipeId = dataReader.GetInt32(0);
-                recipe.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
-                recipe.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
-                recipe.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
-                recipe.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
-                recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
-                recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
-                recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
-                recipe.Blog = dataReader[8] == DBNull.Value ? "" : dataReader.GetString(8);
+                try
+                {
+                    var recipe = new Recipe();
+                    recipe.RecipeId = dataReader.GetInt32(0);
+                    recipe.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
+                    recipe.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
+                    recipe.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
+                    recipe.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
+                    recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
+                    recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
+                    recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
+                    recipe.BlogName = dataReader[8] == DBNull.Value ? "" : dataReader.GetString(8);
+                    recipe.DishIds = dataReader[9] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(9).ToString());
+                    recipe.DishSubCategoryIds = dataReader[10] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(10).ToString());
+                    recipe.DishMainCategoryIds = dataReader[11] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(11).ToString());
+                    recipe.IngredientIds = dataReader[12] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(12).ToString());
+                    recipe.IngredientCategoryIds = dataReader[13] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(13).ToString());
 
-                recipeList.Add(recipe);
-
+                    recipeList.Add(recipe);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
+                
+               
             }
 
             return recipeList;
+        }
+
+        private List<int> ConvertStringToIntList(string text)
+        {
+            if(!(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text)))
+            {
+                return text.Replace(",NULL", "").Trim().Split(',').Select(x => Convert.ToInt32(x)).ToList();
+            }
+
+            return new List<int>();
+            
         }
     }
 }

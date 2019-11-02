@@ -45,7 +45,7 @@ namespace Model.Utilities.Odbc
         {
             _log.Info($"(Set the query for inserting data, query: {query}");
             BeginTransaction();
-            _odbcCommand.CommandText = query;
+            _odbcCommand.CommandText = query;//.Replace("'","");
             var updatedRows = _odbcCommand.ExecuteReader();
             _log.Info($"(The count of the updated rows: {updatedRows})");
             Commit();

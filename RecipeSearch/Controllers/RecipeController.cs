@@ -11,6 +11,8 @@ using Model.DataAccess;
 using Model.Domain;
 using Model.Utilities.Parsers;
 using RecipeSearch.Models;
+using RecipeSearch.Models.SearchRecipe;
+using RecipeSearch.RecipeService;
 
 namespace RecipeSearch.Controllers
 {
@@ -25,12 +27,22 @@ namespace RecipeSearch.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> SearchRecipes(string search, int count)
+        public async Task<IHttpActionResult> SearchRecipes(string search, int count,
+            [FromUri] int[] dishIds,
+            [FromUri] int[] dishSubCategoryIds,
+            [FromUri] int[] dishMainCategoryIds,
+            [FromUri] int[] ingredientIds,
+            [FromUri] int[] ingredientCategoryIds)
         {
             try
             {
-                var result = await Task.Run(() =>_recipeService.SelectPreviewRecipeModelBySearchText(search, count));
-                return Ok(result);
+                var result = await _recipeService.SelectRecipePreviewModelBySearchText(search, count, dishIds, dishSubCategoryIds, dishMainCategoryIds,ingredientIds,ingredientCategoryIds);              
+                return Ok(new 
+                {
+                    count = result.Count,
+                    recipes = result
+                    
+                });
             }
             catch (Exception e)
             {
@@ -41,11 +53,13 @@ namespace RecipeSearch.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> SearchRecipeModel(int id)
         {
-            //1456
             try
             {
-                var result = await Task.Run(() => _recipeService.SelectRecipeModelByRecipeId(id));
-                return Ok(new RecipeModelById{Recipes = result});
+                var result = await _recipeService.SelectRecipeModelByRecipeId(id);
+                return Ok(new 
+                {
+                    recipe = result
+                });
             }
             catch (Exception e)
             {

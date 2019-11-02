@@ -9,6 +9,8 @@ namespace Model.DataAccess
 {
     public interface IDishDao
     {
-        List<Dish> SelectRecipeDishByRecipeId(int recipeId);
+        List<Dish> SelectDishes();
+        List<DishSubCategory> SelectDishSubCategories();
+        List<DishMainCategory> SelectDishMainCategories();
     }
 }

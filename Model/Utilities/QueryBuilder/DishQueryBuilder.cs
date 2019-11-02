@@ -8,19 +8,36 @@ namespace Model.Utilities.QueryBuilder
 {
     public class DishQueryBuilder
     {
-        public string SelectRecipeDishByRecipeId(int recipeId)
+        public string SelectDishes()
         {
-            var query = "SELECT " +
-                        "D.id," +
-                        "D.name " +
-                        "FROM dish D " +
-                        "LEFT JOIN recipe R ON D.id = R.dish_id " +
-                        $"WHERE R.id = {recipeId}";
-            //jak podejsc do kwestii dishcategory???
-            //tak samo featurecategory???
-
-            return query;
+            return "SELECT " +
+                   "D.id, " +
+                   "D.name, " +
+                   "D.category_id " +
+                   "FROM dish D";
         }
+
+        public string SelectDishSubCategories()
+        {
+            return "SELECT " +
+                   "DC.id, " +
+                   "DC.name, " +
+                   "DC.parent_id " +
+                   "FROM dishcategory DC " +
+                   "WHERE DC.parent_id IS NOT NULL";
+        }
+
+        public string SelectDishMainCategories()
+        {
+            return "SELECT " +
+                   "DM.id, " +
+                   "DM.name " +
+                   "FROM dishcategory DS " +
+                   "JOIN dishCategory DM on DS.parent_id = DM.id " +
+                   "GROUP BY DM.id";
+
+        }
+            
 
     }
 }

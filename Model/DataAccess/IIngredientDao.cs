@@ -9,6 +9,8 @@ namespace Model.DataAccess
 {
     public interface IIngredientDao
     {
-        List<Ingredient> SelectAllIngredientsByRecipeId(int recipeId);
+        List<Ingredient> SelectIngredients();
+        List<IngredientCategory> SelectIngredientCategories();
+        List<IngredientCategoryXref> SelectIngriedentCategoiresXref();
     }
 }

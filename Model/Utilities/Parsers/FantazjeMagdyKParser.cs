@@ -27,7 +27,7 @@ namespace Model.Utilities.Parsers
             RecipeWebDocument = new HtmlWeb();
             try
             {
-                RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);
+                RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);//,"GET", new WebProxy("qgproxy.qg.com"), new NetworkCredential());
                 InitXpathPatterns();
             }
             catch (Exception e)

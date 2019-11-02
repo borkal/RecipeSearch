@@ -29,11 +29,25 @@ namespace Model.DataAccess
 
         }
 
-        public List<Ingredient> SelectAllIngredientsByRecipeId(int recipeId)
+        public List<Ingredient> SelectIngredients()
         {
-            var query = _ingredientQuery.SelectAllIngredientsByRecipeId(recipeId);
+            var query = _ingredientQuery.SelectIngredients();
             var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _ingredientMapper.SelectAllIngredientsByRecipeIdMapper(dbReader);
+            return _ingredientMapper.SelectIngredients(dbReader);
+        }
+
+        public List<IngredientCategory> SelectIngredientCategories()
+        {
+            var query = _ingredientQuery.SelectIngriedentCategoires();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _ingredientMapper.SelectIngredientCategoriesMapper(dbReader);
+        }
+
+        public List<IngredientCategoryXref> SelectIngriedentCategoiresXref()
+        {
+            var query = _ingredientQuery.SelectIngriedentCategoiresXref();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _ingredientMapper.SelectIngriedentCategoiresXrefMapper(dbReader);
         }
     }
 }
