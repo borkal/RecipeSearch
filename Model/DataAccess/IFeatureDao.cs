@@ -10,5 +10,8 @@ namespace Model.DataAccess
     public interface IFeatureDao
     {
         List<Feature> SelectRecipeFeatureByRecipeId(int recipeId);
+        List<FeatureCategory> SelectFeatureCategories();
+        List<Feature> SelectFeatures();
+        List<RecipeFeatureXref> SelectRecipeFeatureXref();
     }
 }

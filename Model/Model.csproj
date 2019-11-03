@@ -60,6 +60,7 @@
     <Compile Include="Domain\Dish\DishSubCategory.cs" />
     <Compile Include="Domain\Feature\Feature.cs" />
     <Compile Include="Domain\Feature\FeatureCategory.cs" />
+    <Compile Include="Domain\Feature\RecipeFeatureXref.cs" />
     <Compile Include="Domain\Ingredient\Ingredient.cs" />
     <Compile Include="Domain\Ingredient\IngredientCategory.cs" />
     <Compile Include="Domain\Ingredient\IngredientCategoryXref.cs" />

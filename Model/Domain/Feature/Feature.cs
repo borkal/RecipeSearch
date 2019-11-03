@@ -10,6 +10,6 @@ namespace Model.Domain
     {
         public int FeatureId { get; set; }
         public string FeatureName { get; set; }
-        public FeatureCategory FeatureCategory { get; set; }
+        public int FeatureCategoryId { get; set; }
     }
 }

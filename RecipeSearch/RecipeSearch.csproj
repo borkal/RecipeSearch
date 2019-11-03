@@ -145,6 +145,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DishController.cs" />
+    <Compile Include="Controllers\FeatureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
@@ -154,11 +155,15 @@
     <Compile Include="Models\Dish\DishModel.cs" />
     <Compile Include="Models\Dish\DishMainCategoryModel.cs" />
     <Compile Include="Models\Dish\DishSubCategoryModel.cs" />
+    <Compile Include="Models\Feature\FeatureCategoriesModel.cs" />
+    <Compile Include="Models\Feature\FeatureModel.cs" />
+    <Compile Include="Models\Feature\RecipeFeatureXrefModel.cs" />
     <Compile Include="Models\Recipe\RecipeModel.cs" />
     <Compile Include="Models\Recipe\RecipePreviewModel.cs" />
     <Compile Include="Models\SearchRecipe\SearchRecipeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DishService.cs" />
+    <Compile Include="Services\FeatureService.cs" />
     <Compile Include="Services\IngredientService.cs" />
     <Compile Include="Services\RecipeService.cs" />
   </ItemGroup>

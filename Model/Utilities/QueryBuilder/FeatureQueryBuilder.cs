@@ -21,5 +21,30 @@ namespace Model.Utilities.QueryBuilder
             return query;
         }
 
+        public string SelectFeatureCategories()
+        {
+            return "SELECT " +
+                "FC.id, " +
+                "FC.name " +
+                "FROM featurecategory FC ";
+        }
+
+        public string SelectFeatures()
+        {
+            return "SELECT " +
+                "F.id, " +
+                "F.name, " +
+                "F.category_id " +
+                "FROM feature F ";
+        }
+
+        public string SelectRecipeFeatureXref()
+        {
+            return "SELECT " +
+                "RF.recipe_id, " +
+                "RF.feature_id " +
+                "FROM recipe_feature RF";
+        }
+
     }
 }

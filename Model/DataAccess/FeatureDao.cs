@@ -33,5 +33,26 @@ namespace Model.DataAccess
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _featureMapper.SelectRecipeFeatureByRecipeIdMapper(dbReader);
         }
+
+        public List<FeatureCategory> SelectFeatureCategories()
+        {
+            var query = _featureQuery.SelectFeatureCategories();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _featureMapper.SelectFeatureCategories(dbReader);
+        }
+
+        public List<Feature> SelectFeatures()
+        {
+            var query = _featureQuery.SelectFeatures();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _featureMapper.SelectFeatures(dbReader);
+        }
+
+        public List<RecipeFeatureXref> SelectRecipeFeatureXref()
+        {
+            var query = _featureQuery.SelectRecipeFeatureXref();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _featureMapper.SelectRecipeFeatureXref(dbReader);
+        }
     }
 }
