@@ -12,16 +12,13 @@ namespace RecipeSearch.Models
         public string Title { get; set; }
         public string Url { get; set; }
         public string Image_Url { get; set; }
-        public List<int> DishIds { get; set; }
-        public List<int> DishSubCategoryIds { get; set; }
-        public List<int> DishMainCategoryIds { get; set; }
-
+        public int DishId { get; set; }
+        public int DishSubCategoryId { get; set; }
+        public int DishMainCategoryId { get; set; }
         public List<int> IngredientIds { get; set; }
         public List<int> IngredientCategoryIds { get; set; }
-       
-
-        //public List<Dish> Dishes2 { get; set; }
-        //public List<DishSubCategory> DishSubCategories2 { get; set; }
-        //public List<DishMainCategory> DishMainCategories2 { get; set; }
+        public List<int> FeatureIds { get; set; }
+        public List<int> FeatureCategoryIds { get; set; }
+        
     }
 }

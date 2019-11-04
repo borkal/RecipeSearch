@@ -17,8 +17,8 @@ namespace Model.Utilities.ModelMapper
             {
                 Ingredient ingredientToList = new Ingredient();
                 ingredientToList.IngredientId = dataReader.GetInt32(0);
-                ingredientToList.IngredientName = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
-                ingredientToList.IngredientParentId = dataReader.GetInt32(2);
+                ingredientToList.IngredientCategoryIds = dataReader[1] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(1).ToString());
+                ingredientToList.IngredientName = dataReader[2] == DBNull.Value ? "" : dataReader.GetString(2);
                 ingredientToList.IngredientCitrus = dataReader.GetBoolean(3);
                 ingredientToList.IngredientNut = dataReader.GetBoolean(4);
                 ingredientToList.IngredientSugar = dataReader.GetBoolean(5);
@@ -64,6 +64,17 @@ namespace Model.Utilities.ModelMapper
             }
 
             return ingredientCategoryXrefList;
+        }
+
+        private List<int> ConvertStringToIntList(string text)
+        {
+            if (!(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text) || text == "NULL"))
+            {
+                return text.Replace(",NULL", "").Trim().Split(',').Select(x => Convert.ToInt32(x)).ToList();
+            }
+
+            return new List<int>();
+
         }
 
 

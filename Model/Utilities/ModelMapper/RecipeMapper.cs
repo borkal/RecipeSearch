@@ -93,9 +93,9 @@ namespace Model.Utilities.ModelMapper
             var recipeList = new List<Recipe>();
             while (dataReader.Read())
             {
+                var recipe = new Recipe();
                 try
                 {
-                    var recipe = new Recipe();
                     recipe.RecipeId = dataReader.GetInt32(0);
                     recipe.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
                     recipe.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
@@ -105,11 +105,13 @@ namespace Model.Utilities.ModelMapper
                     recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
                     recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
                     recipe.BlogName = dataReader[8] == DBNull.Value ? "" : dataReader.GetString(8);
-                    recipe.DishIds = dataReader[9] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(9).ToString());
-                    recipe.DishSubCategoryIds = dataReader[10] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(10).ToString());
-                    recipe.DishMainCategoryIds = dataReader[11] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(11).ToString());
+                    recipe.DishId = dataReader[9] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(9));
+                    recipe.DishSubCategoryId = dataReader[10] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(10));
+                    recipe.DishMainCategoryId = dataReader[11] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(11));
                     recipe.IngredientIds = dataReader[12] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(12).ToString());
                     recipe.IngredientCategoryIds = dataReader[13] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(13).ToString());
+                    recipe.FeatureIds = dataReader[14] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(14).ToString());
+                    recipe.FeatureCategoryIds = dataReader[15] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(15).ToString());
 
                     recipeList.Add(recipe);
                 }
@@ -128,7 +130,7 @@ namespace Model.Utilities.ModelMapper
 
         private List<int> ConvertStringToIntList(string text)
         {
-            if(!(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text)))
+            if(!(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text) || text == "NULL"))
             {
                 return text.Replace(",NULL", "").Trim().Split(',').Select(x => Convert.ToInt32(x)).ToList();
             }

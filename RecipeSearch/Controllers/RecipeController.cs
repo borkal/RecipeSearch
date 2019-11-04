@@ -32,11 +32,45 @@ namespace RecipeSearch.Controllers
             [FromUri] int[] dishSubCategoryIds,
             [FromUri] int[] dishMainCategoryIds,
             [FromUri] int[] ingredientIds,
-            [FromUri] int[] ingredientCategoryIds)
+            [FromUri] int[] ingredientCategoryIds,
+            [FromUri] int[] featureIds,
+            [FromUri] int[] featureCategoryIds,
+            bool? citrus = null,
+            bool? nut = null,
+            bool? sugar = null,
+            bool? mushroom = null,
+            bool? gluten = null,
+            bool? cowMilk = null,
+            bool? wheat = null,
+            bool? egg = null,
+            bool? vegetarian = null
+            )
         {
             try
             {
-                var result = await _recipeService.SelectRecipePreviewModelBySearchText(search, count, dishIds, dishSubCategoryIds, dishMainCategoryIds,ingredientIds,ingredientCategoryIds);              
+                var searchRecipeModel = new SearchRecipeModel
+                {
+                    Search = search,
+                    Count = count,
+                    DishIds = dishIds,
+                    DishSubCategoryIds = dishSubCategoryIds,
+                    DishMainCategoryIds = dishMainCategoryIds,
+                    IngredientIds = ingredientIds,
+                    IngredientCategoryIds = ingredientCategoryIds,
+                    FeatureIds = featureIds,
+                    FeatureCategoryIds = featureCategoryIds,
+                    Citrus = citrus,
+                    Nut = nut,
+                    Sugar = sugar,
+                    Mushroom = mushroom,
+                    Gluten = gluten,
+                    CowMilk = cowMilk,
+                    Wheat = wheat,
+                    Egg = egg,
+                    Vegetarian = vegetarian
+                };
+
+                var result = await _recipeService.SelectRecipePreviewModelBySearchText(searchRecipeModel);              
                 return Ok(new 
                 {
                     count = result.Count,

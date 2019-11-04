@@ -10,7 +10,7 @@ namespace Model.Domain
     {
         public int IngredientId { get; set; }
         public string IngredientName { get; set; }
-        public int IngredientParentId { get; set; }
+        public List<int> IngredientCategoryIds { get; set; }
         public int IngredientQuantity { get; set; } //default??
         public bool IngredientCitrus { get; set; }
         public bool IngredientNut { get; set; }

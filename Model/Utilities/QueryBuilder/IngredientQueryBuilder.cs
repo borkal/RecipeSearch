@@ -12,19 +12,20 @@ namespace Model.Utilities.QueryBuilder
         {
             var query = "SELECT " +
                         "I.id," +
+                        "Replace(Replace((CAST(array_agg(distinct IC.categories_id) AS VARCHAR)),'}',''), '{', '') as ingredientCategoryIds," +
                         "I.name," +
-                        "I.defaultquantity," +
                         "I.citrus," +
                         "I.nut," +
                         "I.sugar," +
                         "I.mushroom," +
-                        "I.gluten,I.cowmilk," +
+                        "I.gluten," +
+                        "I.cowmilk," +
                         "I.wheat," +
                         "I.egg," +
                         "I.vegetarian " +
                         "FROM ingredient I " +
-                        "LEFT JOIN recipeelement RE ON RE.ingredient_id = I.id " +
-                        "LEFT JOIN recipe R ON R.id = RE.recipe_id ";
+                        "LEFT JOIN ingredient_ingredientcategory IC on IC.ingredient_id = I.id " +
+                        "GROUP BY I.id";
 
             return query;
         }

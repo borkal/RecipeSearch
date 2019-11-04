@@ -25,16 +25,34 @@ namespace RecipeSearch.Controllers
             _ingredientService = ingredientService;
         }
 
+        [Route("ingredient/ingredients")]
+        [HttpGet]
+        public async Task<IHttpActionResult> SelectIngredients()
+        {
+            try
+            {
+                var ingredientsList = await _ingredientService.SelectIngredients();
+                return Ok(new
+                {
+                    ingredients = ingredientsList
+                });
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+        }
+
         [Route("ingredient/ingredientCategories")]
         [HttpGet]
         public async Task<IHttpActionResult> SelectIngredientCategories()
         {
             try
             {
-                var ingredietnCategoriesList = await _ingredientService.SelectIngredientCategories();
+                var ingredientCategoriesList = await _ingredientService.SelectIngredientCategories();
                 return Ok(new
                 {
-                    ingredientCategories = ingredietnCategoriesList
+                    ingredientCategories = ingredientCategoriesList
                 });
             }
             catch (Exception e)

@@ -9,6 +9,7 @@ using Model.DataAccess;
 using Model.Enums;
 using Model.Utilities.Parsers;
 using RecipeSearch.Models;
+using RecipeSearch.Models.SearchRecipe;
 
 namespace RecipeSearch.RecipeService
 {
@@ -28,9 +29,9 @@ namespace RecipeSearch.RecipeService
             _ingredientDao = ingredientDao;
         }
 
-        internal async Task<List<RecipePreviewModel>> SelectRecipePreviewModelBySearchText(string searchText, int count, int[] dishIds, int[] dishSubCategoryIds, int[] dishMainCategoryIds, int[] ingredientIds, int[] ingredientCategoryIds)
+        internal async Task<List<RecipePreviewModel>> SelectRecipePreviewModelBySearchText(SearchRecipeModel searchRecipeModel)
         {
-            var foundRecipes = _recipeDao.SelectAlLRecipesBySearchText(searchText, dishIds, dishSubCategoryIds, dishMainCategoryIds, ingredientIds, ingredientCategoryIds).Take(count).ToList();
+            var foundRecipes = _recipeDao.SelectAlLRecipesBySearchText(searchRecipeModel.Search, searchRecipeModel.DishIds, searchRecipeModel.DishSubCategoryIds, searchRecipeModel.DishMainCategoryIds, searchRecipeModel.IngredientIds, searchRecipeModel.IngredientCategoryIds, searchRecipeModel.FeatureIds, searchRecipeModel.FeatureCategoryIds, searchRecipeModel.Citrus, searchRecipeModel.Nut, searchRecipeModel.Sugar, searchRecipeModel.Mushroom, searchRecipeModel.Gluten, searchRecipeModel.CowMilk, searchRecipeModel.Wheat, searchRecipeModel.Egg, searchRecipeModel.Vegetarian, searchRecipeModel.Count).ToList();
             var recipeList = new List<RecipePreviewModel>();
 
             foreach (var recipe in foundRecipes)
@@ -42,11 +43,13 @@ namespace RecipeSearch.RecipeService
                     Image_Url = recipe.RecipeImage,
                     Title = recipe.RecipeName,
                     Url = recipe.RecipeUrl,
-                    DishIds = recipe.DishIds,
-                    DishSubCategoryIds = recipe.DishSubCategoryIds,
-                    DishMainCategoryIds = recipe.DishMainCategoryIds,
+                    DishId = recipe.DishId,
+                    DishSubCategoryId = recipe.DishSubCategoryId,
+                    DishMainCategoryId = recipe.DishMainCategoryId,
                     IngredientIds = recipe.IngredientIds,
-                    IngredientCategoryIds = recipe.IngredientCategoryIds
+                    IngredientCategoryIds = recipe.IngredientCategoryIds,
+                    FeatureIds = recipe.FeatureIds,
+                    FeatureCategoryIds = recipe.FeatureCategoryIds
                 };
 
                 recipeList.Add(recipeModel);

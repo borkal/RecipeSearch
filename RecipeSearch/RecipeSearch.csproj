@@ -158,6 +158,8 @@
     <Compile Include="Models\Feature\FeatureCategoriesModel.cs" />
     <Compile Include="Models\Feature\FeatureModel.cs" />
     <Compile Include="Models\Feature\RecipeFeatureXrefModel.cs" />
+    <Compile Include="Models\Ingredient\IngredientCategoryModel.cs" />
+    <Compile Include="Models\Ingredient\IngredientModel.cs" />
     <Compile Include="Models\Recipe\RecipeModel.cs" />
     <Compile Include="Models\Recipe\RecipePreviewModel.cs" />
     <Compile Include="Models\SearchRecipe\SearchRecipeModel.cs" />
@@ -207,7 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Ingredient\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
