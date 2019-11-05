@@ -29,9 +29,9 @@ namespace Model.DataAccess
             _recipeMapper = recipeMapper;
         }
 
-        public List<Recipe> SelectAlLRecipesBySearchText(string searchText, int[] dishIds, int[] dishSubCategoryIds, int[] dishMainCategoryIds, int[] ingredientIds, int[] ingredientCategoryIds, int[] featureIds, int[] featureCategoryIds, bool? citrus, bool? nut, bool? sugar, bool? mushroom, bool? gluten, bool? cowMilk, bool? wheat, bool? egg, bool? vegetarian, int count)
+        public List<Recipe> SelectAlLRecipesBySearchText(SearchRecipe searchRecipe)
         {
-            var query = _recipeQuery.SelectAlLRecipesBySearchText(searchText, dishIds, dishSubCategoryIds, dishMainCategoryIds, ingredientIds, ingredientCategoryIds, featureIds, featureCategoryIds, citrus, nut, sugar, mushroom, gluten, cowMilk, wheat, egg, vegetarian, count);
+            var query = _recipeQuery.SelectAlLRecipesBySearchText(searchRecipe);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _recipeMapper.SelectAlLRecipesBySearchText(dbReader);
         }

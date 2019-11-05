@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.WebPages.Scope;
 using Model.DataAccess;
+using Model.Domain;
 using Model.Enums;
 using Model.Utilities.Parsers;
 using RecipeSearch.Models;
@@ -31,7 +32,30 @@ namespace RecipeSearch.RecipeService
 
         internal async Task<List<RecipePreviewModel>> SelectRecipePreviewModelBySearchText(SearchRecipeModel searchRecipeModel)
         {
-            var foundRecipes = _recipeDao.SelectAlLRecipesBySearchText(searchRecipeModel.Search, searchRecipeModel.DishIds, searchRecipeModel.DishSubCategoryIds, searchRecipeModel.DishMainCategoryIds, searchRecipeModel.IngredientIds, searchRecipeModel.IngredientCategoryIds, searchRecipeModel.FeatureIds, searchRecipeModel.FeatureCategoryIds, searchRecipeModel.Citrus, searchRecipeModel.Nut, searchRecipeModel.Sugar, searchRecipeModel.Mushroom, searchRecipeModel.Gluten, searchRecipeModel.CowMilk, searchRecipeModel.Wheat, searchRecipeModel.Egg, searchRecipeModel.Vegetarian, searchRecipeModel.Count).ToList();
+            var foundRecipes = _recipeDao.SelectAlLRecipesBySearchText(new SearchRecipe
+            {
+                Search = searchRecipeModel.Search,
+                Count = searchRecipeModel.Count,
+                DishIds = searchRecipeModel.DishIds,
+                DishSubCategoryIds = searchRecipeModel.DishSubCategoryIds,
+                DishMainCategoryIds = searchRecipeModel.DishMainCategoryIds,
+                IngredientIds = searchRecipeModel.IngredientIds,
+                IngredientCategoryIds = searchRecipeModel.IngredientCategoryIds,
+                FeatureIds = searchRecipeModel.FeatureIds,
+                FeatureCategoryIds = searchRecipeModel.FeatureCategoryIds,
+                Citrus = searchRecipeModel.Citrus,
+                Nut = searchRecipeModel.Nut,
+                Sugar = searchRecipeModel.Sugar,
+                Mushroom = searchRecipeModel.Mushroom,
+                Gluten = searchRecipeModel.Gluten,
+                CowMilk = searchRecipeModel.CowMilk,
+                Wheat = searchRecipeModel.Wheat,
+                Egg = searchRecipeModel.Egg,
+                Vegetarian = searchRecipeModel.Vegetarian
+
+
+            }).ToList();
+
             var recipeList = new List<RecipePreviewModel>();
 
             foreach (var recipe in foundRecipes)

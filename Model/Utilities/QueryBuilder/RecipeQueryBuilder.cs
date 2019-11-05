@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Domain;
 
 namespace Model.Utilities.QueryBuilder
 {
@@ -96,7 +97,7 @@ namespace Model.Utilities.QueryBuilder
 
         }
 
-        public string SelectAlLRecipesBySearchText(string searchText, int[] dishIds, int[] dishSubCategoryIds, int[] dishMainCategoryIds, int[] ingredientIds, int[] ingredientCategoryIds, int[] featureIds, int[] featureCategoryIds, bool? citrus, bool? nut, bool? sugar, bool? mushroom, bool? gluten, bool? cowMilk, bool? wheat, bool? egg, bool? vegetarian, int count)
+        public string SelectAlLRecipesBySearchText(SearchRecipe search)
         {
             var query = "SELECT " + 
             "R.id, " +
@@ -122,7 +123,7 @@ namespace Model.Utilities.QueryBuilder
             "LEFT JOIN dishCategory DS on D.category_id = DS.id " +
             "LEFT JOIN dishCategory DM on DS.parent_id = DM.id " +
             "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
-            "LEFT JOIN " +
+            "JOIN " +
                     "(SELECT RE2.recipe_id, I2.id, I2.name " +
                     "FROM recipeelement RE2 " +
                     "LEFT JOIN ingredient I2 on RE2.ingredient_id = I2.id) I2 on I2.recipe_id = RE.recipe_id " +
@@ -137,28 +138,30 @@ namespace Model.Utilities.QueryBuilder
                     "LEFT JOIN feature F2 on RF2.feature_id = F2.id) F2 on F2.recipe_id = R.id " +
             "LEFT JOIN featurecategory FC on FC.id = F2.category_id " +
             "WHERE RS.id in (1, 3, 5) " +
-            (dishIds.Any() ? $"AND D.id in ({String.Join(",", dishIds.Select(x => x.ToString()))}) " : "") +
-            (dishSubCategoryIds.Any() ? $"AND DS.id in ({String.Join(",", dishSubCategoryIds.Select(x => x.ToString()))}) " : "") +
-            (dishMainCategoryIds.Any() ? $"AND DM.id in ({String.Join(",", dishMainCategoryIds.Select(x => x.ToString()))}) " : "")  +
-            (ingredientIds.Any() ? $"AND I.id in ({String.Join(",", ingredientIds.Select(x => x.ToString()))}) " : "") +
-            (ingredientCategoryIds.Any() ? $"AND IC.id in ({String.Join(",", ingredientCategoryIds.Select(x => x.ToString()))}) " : "") +
-            (featureIds.Any() ? $"AND F.id in ({String.Join(",", featureIds.Select(x => x.ToString()))}) " : "") +
-            (featureCategoryIds.Any() ? $"AND FC.id in ({String.Join(",", featureCategoryIds.Select(x => x.ToString()))}) " : "") +
-            (citrus != null ? $"AND I.citrus = {citrus} " : "") +
-            (nut != null ? $"AND I.citrus = {nut} " : "") +
-            (mushroom != null ? $"AND I.citrus = {mushroom} " : "") +
-            (gluten != null ? $"AND I.citrus = {gluten} " : "") +
-            (cowMilk != null ? $"AND I.citrus = {cowMilk} " : "") +
-            (wheat != null ? $"AND I.citrus = {wheat} " : "") +
-            (egg != null ? $"AND I.citrus = {egg} " : "") +
-            (vegetarian != null ? $"AND I.citrus = {vegetarian} " : "") +
+            (search.DishIds.Any() ? $"AND D.id in ({String.Join(",", search.DishIds.Select(x => x.ToString()))}) " : "") +
+            (search.DishSubCategoryIds.Any() ? $"AND DS.id in ({String.Join(",", search.DishSubCategoryIds.Select(x => x.ToString()))}) " : "") +
+            (search.DishMainCategoryIds.Any() ? $"AND DM.id in ({String.Join(",", search.DishMainCategoryIds.Select(x => x.ToString()))}) " : "")  +
+            (search.IngredientIds.Any() ? $"AND I.id in ({String.Join(",", search.IngredientIds.Select(x => x.ToString()))}) " : "") +
+            (search.IngredientCategoryIds.Any() ? $"AND IC.id in ({String.Join(",", search.IngredientCategoryIds.Select(x => x.ToString()))}) " : "") +
+            (search.FeatureIds.Any() ? $"AND F.id in ({String.Join(",", search.FeatureIds.Select(x => x.ToString()))}) " : "") +
+            (search.FeatureCategoryIds.Any() ? $"AND FC.id in ({String.Join(",", search.FeatureCategoryIds.Select(x => x.ToString()))}) " : "") +
             $"AND (" +
-            $"LOWER(I.name) like LOWER('%{searchText}%') " +
-            $"OR LOWER(R.name) like LOWER('%{searchText}%') " +
-            $"OR LOWER(IAN.alternativenames) like LOWER('%{searchText}%')" +
+            $"LOWER(I.name) like LOWER('%{search.Search}%') " +
+            $"OR LOWER(R.name) like LOWER('%{search.Search}%') " +
+            $"OR LOWER(IAN.alternativenames) like LOWER('%{search.Search}%')" +
             ") " +
             "GROUP BY R.id, RS.id, D.id, DS.id, DM.id " +
-            $"LIMIT {count}";
+            "HAVING COUNT(DISTINCT I2.id) = (SELECT COUNT(DISTINCT I3.id) FROM recipeelement RE2 LEFT JOIN ingredient I3 on RE2.ingredient_id = I3.id WHERE RE2.recipe_id = R.id " +
+            (search.Citrus != null ? $"AND I3.citrus = {search.Citrus} " : "") +
+            (search.Nut != null ? $"AND I3.nut = {search.Nut} " : "") +
+            (search.Mushroom != null ? $"AND I3.mushroom = {search.Mushroom} " : "") +
+            (search.Gluten != null ? $"AND I3.gluten = {search.Gluten} " : "") +
+            (search.CowMilk != null ? $"AND I3.cowmilk = {search.CowMilk} " : "") +
+            (search.Wheat != null ? $"AND I3.wheat = {search.Wheat} " : "") +
+            (search.Egg != null ? $"AND I3.egg = {search.Egg} " : "") +
+            (search.Vegetarian != null ? $"AND I3.vegetarian = {search.Vegetarian} " : "") +
+            ") " +
+            $"LIMIT {search.Count}";
                 
             return query;
         }
