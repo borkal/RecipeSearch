@@ -11,6 +11,8 @@ using Model.DataAccess;
 using Model.Domain;
 using Model.Utilities.Parsers;
 using RecipeSearch.Models;
+using RecipeSearch.Models.SearchRecipe;
+using RecipeSearch.RecipeService;
 
 namespace RecipeSearch.Controllers
 {
@@ -25,29 +27,73 @@ namespace RecipeSearch.Controllers
         }
 
         [HttpGet]
-        //[Route("recipeApi/searchRecipeByText/{search}/{count}")]
-        public async Task<IHttpActionResult> SearchRecipes(string search, int count)
+        public async Task<IHttpActionResult> SearchRecipes(string search, int count,
+            [FromUri] int[] dishIds,
+            [FromUri] int[] dishSubCategoryIds,
+            [FromUri] int[] dishMainCategoryIds,
+            [FromUri] int[] ingredientIds,
+            [FromUri] int[] ingredientCategoryIds,
+            [FromUri] int[] featureIds,
+            [FromUri] int[] featureCategoryIds,
+            bool? citrus = null,
+            bool? nut = null,
+            bool? sugar = null,
+            bool? mushroom = null,
+            bool? gluten = null,
+            bool? cowMilk = null,
+            bool? wheat = null,
+            bool? egg = null,
+            bool? vegetarian = null
+            )
         {
             try
             {
-                var result = await Task.Run(() =>_recipeService.SelectPreviewRecipeModelBySearchText(search, count));
-                return Ok(result);
+                var searchRecipeModel = new SearchRecipeModel
+                {
+                    Search = search,
+                    Count = count,
+                    DishIds = dishIds,
+                    DishSubCategoryIds = dishSubCategoryIds,
+                    DishMainCategoryIds = dishMainCategoryIds,
+                    IngredientIds = ingredientIds,
+                    IngredientCategoryIds = ingredientCategoryIds,
+                    FeatureIds = featureIds,
+                    FeatureCategoryIds = featureCategoryIds,
+                    Citrus = citrus,
+                    Nut = nut,
+                    Sugar = sugar,
+                    Mushroom = mushroom,
+                    Gluten = gluten,
+                    CowMilk = cowMilk,
+                    Wheat = wheat,
+                    Egg = egg,
+                    Vegetarian = vegetarian
+                };
+
+                var result = await _recipeService.SelectRecipePreviewModelBySearchText(searchRecipeModel);              
+                return Ok(new 
+                {
+                    count = result.Count,
+                    recipes = result
+                    
+                });
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
         }
-        
+
         [HttpGet]
-        //[Route("recipeApi/searchRecipeById/{id}")]
         public async Task<IHttpActionResult> SearchRecipeModel(int id)
         {
-            //1456
             try
             {
-                var result = await Task.Run(() => _recipeService.SelectRecipeModelByRecipeId(id));
-                return Ok(new RecipeModelById{Recipes = result});
+                var result = await _recipeService.SelectRecipeModelByRecipeId(id);
+                return Ok(new 
+                {
+                    recipe = result
+                });
             }
             catch (Exception e)
             {

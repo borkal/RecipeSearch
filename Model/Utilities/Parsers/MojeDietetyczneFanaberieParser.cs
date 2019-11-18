@@ -16,7 +16,7 @@ namespace Model.Utilities.Parsers
         //tytuly nie zawsze zawieraja nazwe przepisu - jak to bedzie z wyszukiwarka?
         //1426 - zadanie zostalo przerwane - problem z polaczeniem z baza? do sprawdzenia, bo skladniki wypisalo
         private static readonly string DivBodyIngredientsPattern = "//*[@class='post-body entry-content']";
-        private static readonly string DivBodyDescriptionPattern = "//*[@class='post-body entry-content']";
+        private static readonly string DivBodyDescriptionPattern = "//div[@class='post-body entry-content']";
         private static readonly string DivBodyImagePattern = "//*[@class='separator']";
         public Dictionary<int, string> ErrorRecipesList = new Dictionary<int, string>();
         public int RecipeId { get; set; }
@@ -41,17 +41,52 @@ namespace Model.Utilities.Parsers
             }
         }
 
+        // //preceding-sibling::text()
+        // //following-sibling::text()
         public List<string> GetDescription()
         {
             var descriptionList = new List<string>();
             bool process = true;
 
-            var descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyDescriptionPattern}//following-sibling::text()");
+            //var descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyDescriptionPattern}//following-sibling::text()");
+            var descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='MsoNormal']//text()");
+
+            //if (descriptionLiElements == null)
+            //{
+            //    descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='MsoNormal']//text()");
+            //    if (descriptionLiElements == null)
+            //    {
+            //        descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='separator']//text()");
+            //        if (descriptionLiElements == null)
+            //        {
+            //           descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes("//*[@class='separator']//text()");
+            //            if (descriptionLiElements == null)
+            //            {
+            //                descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyDescriptionPattern}//text()[not(ancestor::i)]");
+            //                if (descriptionLiElements == null)
+            //                {
+            //                    descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyDescriptionPattern}//text()[not(ancestor::i)]");
+            //                    if (descriptionLiElements == null)
+            //                    {
+            //                        ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
+            //                        process = false;
+
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             if (descriptionLiElements == null)
+            {
+                descriptionLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyDescriptionPattern}//text()[not(ancestor::li or ancestor::i or ancestor::u or ancestor::span)]");
+                if (descriptionLiElements == null)
                 {
                     ErrorRecipesList.Add(RecipeId, RecipeToProcessUrl);
                     process = false;
+
+                }
             }
 
             if (process)
@@ -82,7 +117,6 @@ namespace Model.Utilities.Parsers
         {
             var ingredientList = new List<string>();
             bool process = true;
-
             var ingredientLiElements = RecipeHtmlDocument.DocumentNode.SelectNodes($"{DivBodyIngredientsPattern}//ul/li");
 
             if (ingredientLiElements == null)
@@ -134,9 +168,3 @@ namespace Model.Utilities.Parsers
         }
     }
 }
-
-//SELECT wyszukujący ilość przepisów z danego bloga
-//Select rs.name, count(r.*) AS NumberOfRecipes from recipe r
-//left join recipesource rs on r.source_id = rs.id
-//GROUP BY rs.name
-//ORDER BY NumberOfRecipes DESC

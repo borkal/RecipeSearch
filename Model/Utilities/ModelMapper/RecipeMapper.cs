@@ -34,7 +34,7 @@ namespace Model.Utilities.ModelMapper
                 recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
                 recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
                 recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
-                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : dataReader.GetInt32(8);
+                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
 
             }
