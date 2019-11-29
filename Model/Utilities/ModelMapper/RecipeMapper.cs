@@ -20,6 +20,25 @@ namespace Model.Utilities.ModelMapper
             return recipeIds;
         }
 
+        public List<string> SelectRecipeIngredientsFromDatabaseMapper(OdbcDataReader dataReader)
+        {
+            var IngredientsList = new List<string>();
+            while (dataReader.Read())
+            {
+                IngredientsList.Add(dataReader.GetString(0));
+            }
+            return IngredientsList;
+        }
+        public List<string> SelectRecipeDescriptionFromDatabaseMapper(OdbcDataReader dataReader)
+        {
+            var DescriptionList = new List<string>();
+            while (dataReader.Read())
+            {
+                DescriptionList.Add(dataReader.GetString(0));
+            }
+            return DescriptionList;
+        }
+
         public Recipe SelectRecipeByRecipeIdMapper(OdbcDataReader dataReader)
         {
             var recipe = new Recipe();

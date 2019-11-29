@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +20,8 @@ namespace Model.Utilities.QueryBuilder
                 "LEFT JOIN recipesource RS on R.source_id = RS.id " +
                 "LEFT JOIN recipeelement RE ON R.Id = RE.recipe_id " +
                 "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
-                "WHERE R" +"S.id in (1, 3, 5) " +
+                "WHERE R" + "S.id in (1, 3, 4, 5, 7, 11) " +
+                //"WHERE R" + "S.id in (1, 3, 5) " +
                $"AND lower(I.name) like lower('%{searchString}%') " +
                $"OR lower(R.name) like lower('%{searchString}%') " +
                 "GROUP BY R.id, RS.id";
@@ -97,6 +100,29 @@ namespace Model.Utilities.QueryBuilder
 
         }
 
+        public string SelectRecipeIngredientsFromDatabase(int recipeId)
+        {
+            var query = "SELECT " +
+                        //"RI.recipe_id, " +
+                        "RI.ingredient_text " +
+                        "FROM recipe_ingredient_display RI " +
+                        $"WHERE RI.recipe_id = {recipeId}";
+
+            return query;
+        }
+
+        public string SelectRecipeDescriptionFromDatabase(int recipeId)
+        {
+            var query = "SELECT " +
+                        //"RI.recipe_id, " +
+                        "RD.description_text " +
+                        "FROM recipe_description_display RD " +
+                        $"WHERE RD.recipe_id = {recipeId}" +
+                        "ORDER BY RD.order_display ASC";
+
+            return query;
+        }
+
         public string SelectAlLRecipesBySearchText(SearchRecipe search)
         {
             var query = "SELECT " + 
@@ -137,7 +163,8 @@ namespace Model.Utilities.QueryBuilder
                     "FROM recipe_feature RF2 " +
                     "LEFT JOIN feature F2 on RF2.feature_id = F2.id) F2 on F2.recipe_id = R.id " +
             "LEFT JOIN featurecategory FC on FC.id = F2.category_id " +
-            "WHERE RS.id in (1, 3, 5) " +
+            "WHERE RS.id in (1, 3, 4, 5, 7, 11) " +
+            //"WHERE RS.id in (1, 3, 5) " +
             (search.DishIds.Any() ? $"AND D.id in ({String.Join(",", search.DishIds.Select(x => x.ToString()))}) " : "") +
             (search.DishSubCategoryIds.Any() ? $"AND DS.id in ({String.Join(",", search.DishSubCategoryIds.Select(x => x.ToString()))}) " : "") +
             (search.DishMainCategoryIds.Any() ? $"AND DM.id in ({String.Join(",", search.DishMainCategoryIds.Select(x => x.ToString()))}) " : "")  +

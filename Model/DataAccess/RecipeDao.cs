@@ -29,6 +29,19 @@ namespace Model.DataAccess
             _recipeMapper = recipeMapper;
         }
 
+        public List<string> SelectRecipeIngredientsFromDatabase(int recipeId)
+        {
+            var query = _recipeQuery.SelectRecipeIngredientsFromDatabase(recipeId);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRecipeIngredientsFromDatabaseMapper(dbReader);
+        }
+        public List<string> SelectRecipeDescriptionFromDatabase(int recipeId)
+        {
+            var query = _recipeQuery.SelectRecipeDescriptionFromDatabase(recipeId);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRecipeDescriptionFromDatabaseMapper(dbReader);
+        }
+
         public List<Recipe> SelectAlLRecipesBySearchText(SearchRecipe searchRecipe)
         {
             var query = _recipeQuery.SelectAlLRecipesBySearchText(searchRecipe);

@@ -85,6 +85,8 @@ namespace RecipeSearch.RecipeService
         internal async Task<RecipeModel> SelectRecipeModelByRecipeId(int recipeId)
         {
             var recipe = _recipeDao.SelectRecipeByRecipeId(recipeId);
+            List<string> recipeIngredients = _recipeDao.SelectRecipeIngredientsFromDatabase(recipeId);
+            List<string> recipeDescription = _recipeDao.SelectRecipeDescriptionFromDatabase(recipeId);
             IParser blog = null;
 
             switch (recipe.BlogId)
@@ -104,9 +106,11 @@ namespace RecipeSearch.RecipeService
             {
                 Blog = recipe.BlogName,
                 Blog_Url = recipe.Blog_Url,
-                Description = blog.Process ? blog.GetDescription() : new List<string>(),
+                //Description = blog.Process ? blog.GetDescription() : new List<string>(),
+                Description = recipeDescription.Any<string>() ? recipeDescription : blog.GetDescription(),
                 Image_Url = recipe.RecipeImage,
-                Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
+                //Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
+                Ingredients = recipeIngredients.Any<string>() ? recipeIngredients : blog.GetIngredients(),
                 Id = recipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
                 Title = recipe.RecipeName
