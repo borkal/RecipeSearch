@@ -56,6 +56,13 @@ namespace Model.DataAccess
             return _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
         }
 
+        public Recipe SelectRandomRecipe()
+        {
+            var query = _recipeQuery.SelectRandomRecipe();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRandomRecipeMapper(dbReader);
+        }
+
         public List<Recipe> SelectRecipesByBlogId(int blogId)
         {
             var query = _recipeQuery.SelectRecipesByBlogId(blogId);

@@ -48,6 +48,30 @@ namespace Model.Utilities.QueryBuilder
             return query;
         }
 
+        public string SelectRandomRecipe() 
+        {
+            var recipeIdRange = "SELECT floor(random() * (2239 - 1 + 1)) + 1";
+
+            //uderzanie w idki ktore istnieja (kod albo baza)
+
+            var query = "SELECT " +
+            "R.id," +
+            "R.comments," +
+            "R.createdate," +
+            "R.image," +
+            "R.name," +
+            "R.url," +
+            "R.status, " +
+            "RS.canonicalurl, " +
+            "RS.id, " +
+            "RS.name " +
+            "FROM recipe R  " +
+            "LEFT JOIN recipesource RS on R.source_id = RS.id " +
+            $"WHERE R.id = ({recipeIdRange})";
+
+            return query;
+        }
+
         public string SelectRecipesByBlogId(int blogId)
         {
             var query = "SELECT " +

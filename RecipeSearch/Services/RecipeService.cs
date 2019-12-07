@@ -107,11 +107,48 @@ namespace RecipeSearch.RecipeService
                 Blog = recipe.BlogName,
                 Blog_Url = recipe.Blog_Url,
                 //Description = blog.Process ? blog.GetDescription() : new List<string>(),
-                Description = recipeDescription.Any<string>() ? recipeDescription : blog.GetDescription(),
+                Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
                 Image_Url = recipe.RecipeImage,
                 //Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
-                Ingredients = recipeIngredients.Any<string>() ? recipeIngredients : blog.GetIngredients(),
+                Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
                 Id = recipeId.ToString(),
+                Source_Url = recipe.RecipeUrl,
+                Title = recipe.RecipeName
+            };
+
+            return recipeModel;
+        }
+
+        internal async Task<RecipeModel> SelectRandomRecipeModel()
+        {
+            var recipe = _recipeDao.SelectRandomRecipe();
+            List<string> recipeIngredients = _recipeDao.SelectRecipeIngredientsFromDatabase(recipe.RecipeId);
+            List<string> recipeDescription = _recipeDao.SelectRecipeDescriptionFromDatabase(recipe.RecipeId);
+            IParser blog = null;
+
+            switch (recipe.BlogId)
+            {
+                case (int)Blogs.FantazjeKulinarneMagdyK:
+                    blog = new FantazjeMagdyKParser(recipe.RecipeUrl);
+                    break;
+                case (int)Blogs.KwestiaSmaku:
+                    blog = new KwestiaSmakuParser(recipe.RecipeUrl);
+                    break;
+                case (int)Blogs.MojeDietetyczneFanaberie:
+                    blog = new MojeDietetyczneFanaberieParser(recipe.RecipeUrl);
+                    break;
+            }
+
+            var recipeModel = new RecipeModel
+            {
+                Blog = recipe.BlogName,
+                Blog_Url = recipe.Blog_Url,
+                //Description = blog.Process ? blog.GetDescription() : new List<string>(),
+                Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
+                Image_Url = recipe.RecipeImage,
+                //Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
+                Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
+                Id = recipe.RecipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
                 Title = recipe.RecipeName
             };
