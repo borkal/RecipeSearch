@@ -10,6 +10,7 @@ namespace Model.Utilities.Odbc
 {
     public class OdbcManager : IDisposable
     {
+
         private OdbcClient _odbcClient;
         private OdbcCommand _odbcCommand;
         private static readonly ILog _log = LogManager.GetLogger(typeof(OdbcManager));
@@ -37,8 +38,11 @@ namespace Model.Utilities.Odbc
         public OdbcDataReader ExecuteReadQuery(string query)
         {
             BeginNoTransaction();
+            _odbcCommand.Connection = _odbcClient.GetConnection();
             _odbcCommand.CommandText = query;
-            return _odbcCommand.ExecuteReader();
+            var reader = _odbcCommand.ExecuteReader();
+            Dispose();
+            return reader;
         }
 
         public void ExecuteUpdateQuery(string query)
@@ -62,6 +66,7 @@ namespace Model.Utilities.Odbc
         public void Dispose()
         {
             _odbcCommand?.Dispose();
+            _odbcClient.Close();
         }
 
         public void RollBack()
