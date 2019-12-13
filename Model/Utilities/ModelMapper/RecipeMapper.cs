@@ -20,6 +20,25 @@ namespace Model.Utilities.ModelMapper
             return recipeIds;
         }
 
+        public List<string> SelectRecipeIngredientsFromDatabaseMapper(OdbcDataReader dataReader)
+        {
+            var IngredientsList = new List<string>();
+            while (dataReader.Read())
+            {
+                IngredientsList.Add(dataReader.GetString(0));
+            }
+            return IngredientsList;
+        }
+        public List<string> SelectRecipeDescriptionFromDatabaseMapper(OdbcDataReader dataReader)
+        {
+            var DescriptionList = new List<string>();
+            while (dataReader.Read())
+            {
+                DescriptionList.Add(dataReader.GetString(0));
+            }
+            return DescriptionList;
+        }
+
         public Recipe SelectRecipeByRecipeIdMapper(OdbcDataReader dataReader)
         {
             var recipe = new Recipe();
@@ -34,7 +53,29 @@ namespace Model.Utilities.ModelMapper
                 recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
                 recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
                 recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
-                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : dataReader.GetInt32(8);
+                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
+                recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
+
+            }
+
+            return recipe;
+        }
+
+        public Recipe SelectRandomRecipeMapper(OdbcDataReader dataReader)
+        {
+            var recipe = new Recipe();
+            while (dataReader.Read())
+            {
+
+                recipe.RecipeId = dataReader.GetInt32(0);
+                recipe.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
+                recipe.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
+                recipe.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
+                recipe.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
+                recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
+                recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
+                recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
+                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
 
             }

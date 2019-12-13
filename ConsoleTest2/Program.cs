@@ -33,7 +33,7 @@ namespace ConsoleTest2
 
                 //ingredients.ForEach(Console.WriteLine);
 
-                int linecounteringredients = 0;
+                int linecounteringredients = 1;
                 foreach (var item in ingredients)
                 {
                     Console.WriteLine(linecounteringredients + " " + item);
@@ -44,7 +44,7 @@ namespace ConsoleTest2
 
                 //description.ForEach(Console.WriteLine);
 
-                int linecounterdescription = 0;
+                int linecounterdescription = 1;
                 foreach (var item in description)
                 {
                     Console.WriteLine(linecounterdescription + " " + item);

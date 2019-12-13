@@ -11,5 +11,8 @@ namespace Model.DataAccess
     {
         Recipe SelectRecipeByRecipeId(int recipeId);
         List<Recipe> SelectAlLRecipesBySearchText(SearchRecipe searchRecipe);
+        List<string> SelectRecipeIngredientsFromDatabase(int recipeId);
+        List<string> SelectRecipeDescriptionFromDatabase(int recipeId);
+        Recipe SelectRandomRecipe();
     }
 }

@@ -100,5 +100,23 @@ namespace RecipeSearch.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet]
+        [Route("recipe/searchRandomRecipe")]
+        public async Task<IHttpActionResult> SearchRandomRecipe()
+        {
+            try
+            {
+                var result = await _recipeService.SelectRandomRecipeModel();
+                return Ok(new
+                {
+                    recipe = result
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
