@@ -20,10 +20,12 @@ namespace RecipeSearch.Controllers
     public class RecipeController : ApiController
     {
         private RecipeService.RecipeService _recipeService;
+        private RecipeDao _recipeDao;
 
         public RecipeController()
         {
             _recipeService = new RecipeService.RecipeService();
+            _recipeDao = new RecipeDao();
         }
 
         [HttpGet]
@@ -108,6 +110,40 @@ namespace RecipeSearch.Controllers
             try
             {
                 var result = await _recipeService.SelectRandomRecipeModel();
+                return Ok(new
+                {
+                    recipe = result
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("recipe/searchDayRecipe")]
+        public async Task<IHttpActionResult> SearchDayRecipe()
+        {
+            string lastDayInDatabase = _recipeDao.SelectRecipeOfTheDayRowFromDatabase().DayRecipeDate;
+            int id;
+
+            if(lastDayInDatabase == System.DateTime.Now.ToShortDateString())
+            {
+                id = _recipeDao.SelectRecipeOfTheDayRowFromDatabase().DayRecipeRecipeId;
+            }
+            else
+            {
+                Random r = new Random();
+                int range = r.Next(1429, 2239);
+                id = range;
+                string date = System.DateTime.Now.ToShortDateString();
+                _recipeDao.InsertRecipeOfTheDayRowToDatabase(date, id);
+            }
+
+            try
+            {
+                var result = await _recipeService.SelectDayRecipeModel(id);
                 return Ok(new
                 {
                     recipe = result

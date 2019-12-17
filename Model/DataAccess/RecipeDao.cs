@@ -63,6 +63,26 @@ namespace Model.DataAccess
             return _recipeMapper.SelectRandomRecipeMapper(dbReader);
         }
 
+        public DayRecipe SelectRecipeOfTheDayRowFromDatabase()
+        {
+            var query = _recipeQuery.SelectRecipeOfTheDayRowFromDatabase();
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRecipeOfTheDayRowFromDatabaseMapper(dbReader);
+        }
+
+        public void InsertRecipeOfTheDayRowToDatabase(string date, int recipeId)
+        {
+            var query = _recipeQuery.InsertRecipeOfTheDayRowToDatabase(date, recipeId);
+            _odbcManager.ExecuteUpdateQuery(query);
+        }
+
+        public Recipe SelectDayRecipe(int id)
+        {
+            var query = _recipeQuery.SelectDayRecipe(id);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectDayRecipeMapper(dbReader);
+        }
+
         public List<Recipe> SelectRecipesByBlogId(int blogId)
         {
             var query = _recipeQuery.SelectRecipesByBlogId(blogId);

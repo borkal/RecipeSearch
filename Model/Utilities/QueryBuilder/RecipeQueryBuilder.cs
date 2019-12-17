@@ -50,9 +50,11 @@ namespace Model.Utilities.QueryBuilder
 
         public string SelectRandomRecipe() 
         {
-            var recipeIdRange = "SELECT floor(random() * (2239 - 1 + 1)) + 1";
+            Random r = new Random();
 
-            //uderzanie w idki ktore istnieja (kod albo baza)
+            int range = r.Next(1429, 2239);
+            string rangeToString = range.ToString();
+
 
             var query = "SELECT " +
             "R.id," +
@@ -67,9 +69,52 @@ namespace Model.Utilities.QueryBuilder
             "RS.name " +
             "FROM recipe R  " +
             "LEFT JOIN recipesource RS on R.source_id = RS.id " +
-            $"WHERE R.id = ({recipeIdRange})";
+            $"WHERE R.id = ({rangeToString})";
 
             return query;
+        }
+
+        public string SelectRecipeOfTheDayRowFromDatabase()
+        {
+            //string dateNow = System.DateTime.Now.ToShortDateString();
+
+            var check = "SELECT " +
+                       "DR.date," +
+                       "DR.recipe_id " +
+                       "FROM dayrecipe DR " +
+                       "ORDER BY DR.date DESC " +
+                       "LIMIT 1";
+                       //$"WHERE DR.date = ('{dateNow}')";
+                       //$"WHERE DR.id = MAX(id)";
+
+            return check;
+        }
+
+        public string InsertRecipeOfTheDayRowToDatabase(string date, int recipeId)
+        {
+            return "INSERT INTO dayrecipe " +
+            $"values('{date}', {recipeId})";
+        }
+        
+        public string SelectDayRecipe(int id)
+        {
+                var query = "SELECT " +
+                "R.id," +
+                "R.comments," +
+                "R.createdate," +
+                "R.image," +
+                "R.name," +
+                "R.url," +
+                "R.status, " +
+                "RS.canonicalurl, " +
+                "RS.id, " +
+                "RS.name " +
+                "FROM recipe R  " +
+                "LEFT JOIN recipesource RS on R.source_id = RS.id " +
+                $"WHERE R.id = {id}";
+
+            return query;
+
         }
 
         public string SelectRecipesByBlogId(int blogId)
