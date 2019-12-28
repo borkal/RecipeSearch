@@ -10,16 +10,6 @@ namespace Model.Utilities.ModelMapper
 {
     public class RecipeMapper
     {
-        public Dictionary<int, string> SearchRecipeIdsBasedOnSearchTextMapper(OdbcDataReader dataReader)
-        {
-            var recipeIds = new Dictionary<int, string>();
-            while (dataReader.Read())
-            {
-                recipeIds.Add(dataReader.GetInt32(0), dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1));
-            }
-            return recipeIds;
-        }
-
         public List<string> SelectRecipeIngredientsFromDatabaseMapper(OdbcDataReader dataReader)
         {
             var IngredientsList = new List<string>();
@@ -27,6 +17,8 @@ namespace Model.Utilities.ModelMapper
             {
                 IngredientsList.Add(dataReader.GetString(0));
             }
+
+            dataReader.Close();
             return IngredientsList;
         }
         public List<string> SelectRecipeDescriptionFromDatabaseMapper(OdbcDataReader dataReader)
@@ -36,6 +28,7 @@ namespace Model.Utilities.ModelMapper
             {
                 DescriptionList.Add(dataReader.GetString(0));
             }
+            dataReader.Close();
             return DescriptionList;
         }
 
@@ -57,7 +50,7 @@ namespace Model.Utilities.ModelMapper
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
 
             }
-
+            dataReader.Close();
             return recipe;
         }
 
@@ -79,7 +72,7 @@ namespace Model.Utilities.ModelMapper
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
 
             }
-
+            dataReader.Close();
             return recipe;
         }
 
@@ -101,32 +94,8 @@ namespace Model.Utilities.ModelMapper
                 recipeList.Add(recipeToList);
 
             }
-
+            dataReader.Close();
             return recipeList;
-        }
-
-        public Dictionary<int, string> SelecAllRecipeNamesAndIds(OdbcDataReader dataReader)
-        {
-            var recipeIdNameList = new Dictionary<int, string>();
-            while (dataReader.Read())
-            {
-                recipeIdNameList.Add(
-                    dataReader.GetInt32(0),
-                    dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1));
-            }
-
-            return recipeIdNameList;
-        }
-
-        public string SelectBlogNameByRecipeId(OdbcDataReader dataReader)
-        {
-            var blogName = "";
-            while (dataReader.Read())
-            {
-                blogName = dataReader[0] == DBNull.Value ? "" : dataReader.GetString(0);
-            }
-
-            return blogName;
         }
 
         public List<Recipe> SelectAlLRecipesBySearchText(OdbcDataReader dataReader)
@@ -165,7 +134,7 @@ namespace Model.Utilities.ModelMapper
                 
                
             }
-
+            dataReader.Close();
             return recipeList;
         }
 
