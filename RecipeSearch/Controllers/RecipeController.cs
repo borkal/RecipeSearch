@@ -125,12 +125,13 @@ namespace RecipeSearch.Controllers
         [Route("recipe/searchDayRecipe")]
         public async Task<IHttpActionResult> SearchDayRecipe()
         {
-            string lastDayInDatabase = _recipeDao.SelectRecipeOfTheDayRowFromDatabase().DayRecipeDate;
+
+            var lastDayRowInDatabase = _recipeDao.SelectRecipeOfTheDayRowFromDatabase();
             int id;
 
-            if(lastDayInDatabase == System.DateTime.Now.ToShortDateString())
+            if(lastDayRowInDatabase.DayRecipeDate == System.DateTime.Now.ToShortDateString())
             {
-                id = _recipeDao.SelectRecipeOfTheDayRowFromDatabase().DayRecipeRecipeId;
+                id = lastDayRowInDatabase.DayRecipeRecipeId;
             }
             else
             {

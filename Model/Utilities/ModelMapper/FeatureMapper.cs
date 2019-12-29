@@ -21,7 +21,7 @@ namespace Model.Utilities.ModelMapper
 
                 featureList.Add(featureToList);
             }
-
+            dataReader.Close();
             return featureList;
         }
 
@@ -36,7 +36,7 @@ namespace Model.Utilities.ModelMapper
 
                 FeatureCategoryList.Add(featureCategoryToList);
             }
-
+            dataReader.Close();
             return FeatureCategoryList;
         }
 
@@ -52,7 +52,7 @@ namespace Model.Utilities.ModelMapper
 
                 FeaturesList.Add(featureToList);
             }
-
+            dataReader.Close();
             return FeaturesList;
         }
 
@@ -67,7 +67,7 @@ namespace Model.Utilities.ModelMapper
 
                 RecipeFeatureList.Add(recipeFeatureToList);
             }
-
+            dataReader.Close();
             return RecipeFeatureList;
         }
 

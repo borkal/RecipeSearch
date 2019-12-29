@@ -31,8 +31,8 @@ namespace Model.Utilities.ModelMapper
 
                 ingredientList.Add(ingredientToList);
             }
-            
 
+            dataReader.Close();
             return ingredientList;
         }
 
@@ -47,7 +47,7 @@ namespace Model.Utilities.ModelMapper
 
                 ingredientCategoryList.Add(ingredientCategory);
             }
-
+            dataReader.Close();
             return ingredientCategoryList;
         }
 
@@ -62,7 +62,7 @@ namespace Model.Utilities.ModelMapper
 
                 ingredientCategoryXrefList.Add(ingredientCategoryXref);
             }
-
+            dataReader.Close();
             return ingredientCategoryXrefList;
         }
 

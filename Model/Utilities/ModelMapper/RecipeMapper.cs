@@ -86,6 +86,7 @@ namespace Model.Utilities.ModelMapper
                 dayRecipe.DayRecipeRecipeId = dataReader.GetInt32(1);
             }
 
+            dataReader.Close();
             return dayRecipe;
         }
 
@@ -108,6 +109,7 @@ namespace Model.Utilities.ModelMapper
 
             }
 
+            dataReader.Close();
             return recipe;
         }
 

@@ -22,7 +22,7 @@ namespace Model.Utilities.ModelMapper
 
                 dishList.Add(dish);
             }
-
+            dataReader.Close();
             return dishList;
         }
         public List<DishSubCategory> SelectDishSubCategories(OdbcDataReader dataReader)
@@ -37,7 +37,7 @@ namespace Model.Utilities.ModelMapper
 
                 dishList.Add(dish);
             }
-
+            dataReader.Close();
             return dishList;
         }
 
@@ -51,7 +51,7 @@ namespace Model.Utilities.ModelMapper
                 dish.DishMainCategoryName = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
                 dishList.Add(dish);
             }
-
+            dataReader.Close();
             return dishList;
         }
 
