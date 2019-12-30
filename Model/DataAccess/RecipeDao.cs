@@ -21,7 +21,6 @@ namespace Model.DataAccess
         {
 
         }
-
         public RecipeDao(OdbcManager odbcManager, RecipeQueryBuilder recipeQueryBuilder, RecipeMapper recipeMapper)
         {
             _odbcManager = odbcManager;
@@ -92,6 +91,12 @@ namespace Model.DataAccess
         public void InsertRecipeDescription(int recipeId, string descriptionText, int orderId)
         {
             var query = _recipeQuery.InsertRecipeDescription(recipeId, descriptionText, orderId);
+            _odbcManager.ExecuteUpdateQuery(query);
+        }
+
+        public void InsertRecipeRateIntoDatabase(int recipeId, int rate)
+        {
+            var query = _recipeQuery.InsertRecipeRateIntoDatabase(recipeId, rate);
             _odbcManager.ExecuteUpdateQuery(query);
         }
     }

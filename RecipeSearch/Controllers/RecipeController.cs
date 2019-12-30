@@ -165,5 +165,20 @@ namespace RecipeSearch.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPost]
+        [Route("recipe/insertRecipeRate")]
+        public async Task<IHttpActionResult> InsertRecipeRate(int recipeId, int rate)
+        {
+            try
+            {
+                await _recipeService.InsertRecipeRateIntoDatabase(recipeId, rate);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

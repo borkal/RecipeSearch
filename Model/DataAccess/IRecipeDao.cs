@@ -15,5 +15,6 @@ namespace Model.DataAccess
         List<string> SelectRecipeDescriptionFromDatabase(int recipeId);
         DayRecipe SelectRecipeOfTheDayRowFromDatabase();
         Recipe SelectDayRecipe(int id);
+        void InsertRecipeRateIntoDatabase(int recipeId, int rate);
     }
 }

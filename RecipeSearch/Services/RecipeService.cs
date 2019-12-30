@@ -23,7 +23,6 @@ namespace RecipeSearch.RecipeService
         {
 
         }
-
         public RecipeService(RecipeDao recipeDao, IngredientDao ingredientDao)
         {
             _recipeDao = recipeDao;
@@ -106,10 +105,8 @@ namespace RecipeSearch.RecipeService
             {
                 Blog = recipe.BlogName,
                 Blog_Url = recipe.Blog_Url,
-                //Description = blog.Process ? blog.GetDescription() : new List<string>(),
                 Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
                 Image_Url = recipe.RecipeImage,
-                //Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
                 Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
                 Id = recipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
@@ -143,10 +140,8 @@ namespace RecipeSearch.RecipeService
             {
                 Blog = recipe.BlogName,
                 Blog_Url = recipe.Blog_Url,
-                //Description = blog.Process ? blog.GetDescription() : new List<string>(),
                 Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
                 Image_Url = recipe.RecipeImage,
-                //Ingredients = blog.Process ? blog.GetIngredients() : new List<string>(),
                 Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
                 Id = recipe.RecipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
@@ -154,6 +149,11 @@ namespace RecipeSearch.RecipeService
             };
 
             return recipeModel;
+        }
+
+        internal async Task InsertRecipeRateIntoDatabase(int recipeId, int rate)
+        {
+            _recipeDao.InsertRecipeRateIntoDatabase(recipeId, rate);
         }
     }
 }
