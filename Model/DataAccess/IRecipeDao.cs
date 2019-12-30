@@ -13,7 +13,6 @@ namespace Model.DataAccess
         List<Recipe> SelectAlLRecipesBySearchText(SearchRecipe searchRecipe);
         List<string> SelectRecipeIngredientsFromDatabase(int recipeId);
         List<string> SelectRecipeDescriptionFromDatabase(int recipeId);
-        Recipe SelectRandomRecipe();
         DayRecipe SelectRecipeOfTheDayRowFromDatabase();
         Recipe SelectDayRecipe(int id);
     }

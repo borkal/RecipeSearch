@@ -28,6 +28,14 @@ namespace RecipeSearch.Controllers
             _recipeDao = new RecipeDao();
         }
 
+        private int randomRecipeId()
+        {
+            Random r = new Random();
+            int id = r.Next(1429, 2239);
+
+            return id;
+        }
+
         [HttpGet]
         public async Task<IHttpActionResult> SearchRecipes(string search, int count,
             [FromUri] int[] dishIds,
@@ -107,9 +115,11 @@ namespace RecipeSearch.Controllers
         [Route("recipe/searchRandomRecipe")]
         public async Task<IHttpActionResult> SearchRandomRecipe()
         {
+            int id = randomRecipeId();
+
             try
             {
-                var result = await _recipeService.SelectRandomRecipeModel();
+                var result = await _recipeService.SelectRecipeModelByRecipeId(id);
                 return Ok(new
                 {
                     recipe = result

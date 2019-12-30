@@ -48,44 +48,14 @@ namespace Model.Utilities.QueryBuilder
             return query;
         }
 
-        public string SelectRandomRecipe() 
-        {
-            Random r = new Random();
-
-            int range = r.Next(1429, 2239);
-            string rangeToString = range.ToString();
-
-
-            var query = "SELECT " +
-            "R.id," +
-            "R.comments," +
-            "R.createdate," +
-            "R.image," +
-            "R.name," +
-            "R.url," +
-            "R.status, " +
-            "RS.canonicalurl, " +
-            "RS.id, " +
-            "RS.name " +
-            "FROM recipe R  " +
-            "LEFT JOIN recipesource RS on R.source_id = RS.id " +
-            $"WHERE R.id = ({rangeToString})";
-
-            return query;
-        }
-
         public string SelectRecipeOfTheDayRowFromDatabase()
         {
-            //string dateNow = System.DateTime.Now.ToShortDateString();
-
             var check = "SELECT " +
                        "DR.date," +
                        "DR.recipe_id " +
                        "FROM dayrecipe DR " +
                        "ORDER BY DR.date DESC " +
                        "LIMIT 1";
-                       //$"WHERE DR.date = ('{dateNow}')";
-                       //$"WHERE DR.id = MAX(id)";
 
             return check;
         }
