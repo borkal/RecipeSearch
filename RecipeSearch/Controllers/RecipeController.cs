@@ -175,7 +175,7 @@ namespace RecipeSearch.Controllers
                 if (check.recipeId !=0 && check.userName != null)
                 {
 
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Forbidden, $"User {username} already rated recipe with id {recipeId}! "));
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Forbidden, $"User {username} already rated recipe with id {recipeId}! as {rate} !"));
                 }
                 else
                 {
