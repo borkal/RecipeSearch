@@ -7,9 +7,11 @@ using System.Web.UI;
 using System.Web.WebPages.Scope;
 using Model.DataAccess;
 using Model.Domain;
+using Model.Domain.Recipe;
 using Model.Enums;
 using Model.Utilities.Parsers;
 using RecipeSearch.Models;
+using RecipeSearch.Models.Recipe;
 using RecipeSearch.Models.SearchRecipe;
 
 namespace RecipeSearch.RecipeService
@@ -72,7 +74,12 @@ namespace RecipeSearch.RecipeService
                     IngredientIds = recipe.IngredientIds,
                     IngredientCategoryIds = recipe.IngredientCategoryIds,
                     FeatureIds = recipe.FeatureIds,
-                    FeatureCategoryIds = recipe.FeatureCategoryIds
+                    FeatureCategoryIds = recipe.FeatureCategoryIds,
+                    Rate = new RecipeTotalRate
+                    {
+                        Amount = recipe.TotalRecipeRate.RateAmounts,
+                        Average = recipe.TotalRecipeRate.RateAverage
+                    }
                 };
 
                 recipeList.Add(recipeModel);
@@ -86,8 +93,8 @@ namespace RecipeSearch.RecipeService
             var recipe = _recipeDao.SelectRecipeByRecipeId(recipeId);
             List<string> recipeIngredients = _recipeDao.SelectRecipeIngredientsFromDatabase(recipeId);
             List<string> recipeDescription = _recipeDao.SelectRecipeDescriptionFromDatabase(recipeId);
-            IParser blog = null;
 
+            IParser blog = null;
             switch (recipe.BlogId)
             {
                 case (int)Blogs.FantazjeKulinarneMagdyK:
@@ -105,13 +112,22 @@ namespace RecipeSearch.RecipeService
             {
                 Blog = recipe.BlogName,
                 Blog_Url = recipe.Blog_Url,
-                Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
+                Description = recipeDescription.Any() ? recipeDescription : blog != null ? blog.GetDescription() : new List<string>(),
                 Image_Url = recipe.RecipeImage,
-                Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
+                Ingredients = recipeIngredients.Any() ? recipeIngredients : blog != null ? blog.GetIngredients() : new List<string>(),
                 Id = recipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
-                Title = recipe.RecipeName
+                Title = recipe.RecipeName,
             };
+            
+
+            recipeModel.Rate = recipe.TotalRecipeRate != null
+                ? new RecipeTotalRate
+                {
+                    Amount = recipe.TotalRecipeRate.RateAmounts,
+                    Average = recipe.TotalRecipeRate.RateAverage
+                }
+                : new RecipeTotalRate() {Average = 0, Amount = 0};
 
             return recipeModel;
         }

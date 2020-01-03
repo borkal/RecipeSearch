@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Model.Domain;
+using Model.Domain.Recipe;
 using Model.Utilities.ModelMapper;
 using Model.Utilities.Odbc;
 using Model.Utilities.QueryBuilder;
@@ -45,14 +46,43 @@ namespace Model.DataAccess
         {
             var query = _recipeQuery.SelectAlLRecipesBySearchText(searchRecipe);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SelectAlLRecipesBySearchText(dbReader);
+            var mapper = _recipeMapper.SelectAlLRecipesBySearchText(dbReader);
+            var rates = SelectRecipeRates(mapper.Select(x => x.RecipeId).ToList());
+            
+            mapper.ForEach(x =>
+            {
+                x.Rates = rates.Select(y => y.recipeRate.ToString()).ToList();
+                x.CalculateTotalRecipeRate();
+                //var recipeAverageRate = Convert.ToInt32(rates.Where(y => y.recipeId == x.RecipeId).Select(z => z.recipeRate).Average());
+                //var recipeAmountRate = rates.Count;
+                //x.TotalRecipeRate = new TotalRate
+                //{
+                //    RateAverage = recipeAverageRate,
+                //    RateAmounts = recipeAmountRate
+                //};
+            });
+            return mapper;
         }
 
         public Recipe SelectRecipeByRecipeId(int recipeId)
         {
             var query = _recipeQuery.SelectRecipeByRecipeId(recipeId);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
+            var mapper = _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
+            var rates = SelectRecipeRates(new List<int> {mapper.RecipeId});
+
+            mapper.Rates = rates.Select(x => x.recipeRate.ToString()).ToList();
+            mapper.CalculateTotalRecipeRate();
+
+            return mapper;
+        }
+
+        public List<RecipeRate> SelectRecipeRates(List<int> recipeIds)
+        {
+            var query = _recipeQuery.SelectRecipesRates(recipeIds);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            var mapper = _recipeMapper.SelectRecipesRates(dbReader);
+            return mapper;
         }
 
         public DayRecipe SelectRecipeOfTheDayRowFromDatabase()
@@ -99,5 +129,6 @@ namespace Model.DataAccess
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _recipeMapper.SelectUserRateDataFromRateTableMapper(dbReader);
         }
+        
     }
 }

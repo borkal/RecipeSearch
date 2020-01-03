@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Model.Domain;
+using Model.Domain.Recipe;
 
-namespace RecipeSearch.Models
+
+namespace RecipeSearch.Models.Recipe
 {
     public class RecipePreviewModel
     {
@@ -19,6 +22,7 @@ namespace RecipeSearch.Models
         public List<int> IngredientCategoryIds { get; set; }
         public List<int> FeatureIds { get; set; }
         public List<int> FeatureCategoryIds { get; set; }
-        
+        public RecipeTotalRate Rate { get; set; }
+
     }
 }

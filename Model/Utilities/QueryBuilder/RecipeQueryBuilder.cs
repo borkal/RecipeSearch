@@ -31,19 +31,45 @@ namespace Model.Utilities.QueryBuilder
         public string SelectRecipeByRecipeId(int recipeId)
         {
             var query = "SELECT " +
-                        "R.id," +
-                        "R.comments," +
-                        "R.createdate," +
-                        "R.image," +
-                        "R.name," +
-                        "R.url," +
+                        "R.id, " +
+                        "R.comments, " +
+                        "R.createdate, " +
+                        "R.image, " +
+                        "R.name, " +
+                        "R.url, " +
                         "R.status, " +
                         "RS.canonicalurl, " +
-                        "RS.id, " +
-                        "RS.name " +
-                        "FROM recipe R  " +
+                        "RS.id, RS.name, " +
+                        "Replace(Replace((CAST(array_agg(RR.rate) AS VARCHAR)), '}', ''), '{', '') as reciperates, " +
+                        "D.id as dishId, " +
+                        "DS.id as dishSubCategoryId, " +
+                        "DM.id as dishMainCategoryId, " +
+                        "Replace(Replace((CAST(array_agg(distinct I2.id) AS VARCHAR)), '}', ''), '{', '') as ingredientIds, " +
+                        "Replace(Replace((CAST(array_agg(distinct IC.id) AS VARCHAR)), '}', ''), '{', '') as ingridientCategoryIds, " +
+                        "Replace(Replace((CAST(array_agg(distinct F2.id) AS VARCHAR)), '}', ''), '{', '') as featureIds, " +
+                        "Replace(Replace((CAST(array_agg(distinct FC.id) AS VARCHAR)), '}', ''), '{', '') as featureCategoryIds " +
+                        "FROM recipe R " +
                         "LEFT JOIN recipesource RS on R.source_id = RS.id " +
-                        $"WHERE R.id = {recipeId}";
+                        "LEFT JOIN recipeelement RE on R.id = RE.recipe_id " +
+                        "LEFT JOIN reciperate RR on RR.recipeid = R.id " +
+                        "LEFT JOIN dish D on R.dish_id = D.id " +
+                        "LEFT JOIN dishCategory DS on D.category_id = DS.id " +
+                        "LEFT JOIN dishCategory DM on DS.parent_id = DM.id " +
+                        "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
+                        "JOIN(SELECT RE2.recipe_id, I2.id, I2.name FROM recipeelement RE2 " +
+                        "LEFT JOIN ingredient I2 on RE2.ingredient_id = I2.id) I2 on I2.recipe_id = RE.recipe_id " +
+                        "LEFT JOIN ingredient_alternativenames IAN on I.id = IAN.ingredient_id " +
+                        "LEFT JOIN ingredient_ingredientcategory Ixref on I2.id = Ixref.ingredient_id " +
+                        "LEFT JOIN ingredientcategory IC on Ixref.categories_id = IC.id " +
+                        "LEFT JOIN recipe_feature RF on RF.recipe_id = R.id " +
+                        "LEFT JOIN feature F on RF.feature_id = F.id " +
+                        "LEFT JOIN(SELECT RF2.recipe_id, F2.id, F2.category_id " +
+                        "FROM recipe_feature RF2 " +
+                        "LEFT JOIN feature F2 on RF2.feature_id = F2.id) F2 on F2.recipe_id = R.id " +
+                        "LEFT JOIN featurecategory FC on FC.id = F2.category_id " +
+                        $"WHERE R.id = {recipeId} " +
+                        "GROUP BY R.id, RS.id, D.id, DS.id, DM.id";
+                        
             return query;
         }
 
@@ -114,24 +140,14 @@ namespace Model.Utilities.QueryBuilder
             return query;
         }
 
-        public string SelecAllRecipeNamesAndIds() //testowa metoda
+        public string SelectRecipesRates(List<int> recipeIds)
         {
-            var query = "SELECT " +
-                        "R.id," +
-                        "R.name " +
-                        "FROM recipe R";
-
-            return query;
-        }
-
-        public string SelectBlogNameByRecipeId(int recipeId)
-        {
-            var query = "SELECT RS.name " +
-                        "from recipe R " +
-                        "left join recipesource RS on R.source_id = RS.id " +
-                       $"where R.id = {recipeId}";
-            return query;
-
+            return "SELECT " +
+                   "RR.recipeId," +
+                   "RR.rate," +
+                   "RR.username " +
+                   "FROM reciperate RR " +
+                   $"WHERE RR.recipeid in ({string.Join(",",recipeIds)})";
         }
 
         public string SelectRecipeIngredientsFromDatabase(int recipeId)
@@ -173,10 +189,12 @@ namespace Model.Utilities.QueryBuilder
             "Replace(Replace((CAST(array_agg(distinct I2.id) AS VARCHAR)),'}',''), '{', '') as ingredientIds, " +
             "Replace(Replace((CAST(array_agg(distinct IC.id) AS VARCHAR)),'}',''), '{', '') as ingridientCategoryIds, " +
             "Replace(Replace((CAST(array_agg(distinct F2.id) AS VARCHAR)),'}',''), '{', '') as featureIds, " +
-            "Replace(Replace((CAST(array_agg(distinct FC.id) AS VARCHAR)),'}',''), '{', '') as featureCategoryIds " +
+            "Replace(Replace((CAST(array_agg(distinct FC.id) AS VARCHAR)),'}',''), '{', '') as featureCategoryIds, " +
+            "Replace(Replace((CAST(array_agg(RR.rate) AS VARCHAR)),'}',''), '{', '') as reciperates " +
             "FROM recipe R " +
             "LEFT JOIN recipesource RS on R.source_id = RS.id " +
             "LEFT JOIN recipeelement RE on R.id = RE.recipe_id " +
+            "LEFT JOIN (select RR.recipeid, RR.rate from reciperate RR) RR on RR.recipeid = RE.id  " +
             "LEFT JOIN dish D on R.dish_id = D.id " +
             "LEFT JOIN dishCategory DS on D.category_id = DS.id " +
             "LEFT JOIN dishCategory DM on DS.parent_id = DM.id " +

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Model.Domain.Recipe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Domain
+namespace Model.Domain.Recipe
 {
     public class Recipe
     {
@@ -29,6 +30,19 @@ namespace Model.Domain
         public List<int> IngredientCategoryIds { get; set; }
         public List<int> FeatureIds { get; set; }
         public List<int> FeatureCategoryIds { get; set; }
-       
+        public List<string> Rates { get; set; }
+        public TotalRate TotalRecipeRate { get; set; }
+        public void CalculateTotalRecipeRate()
+        {
+            if (Rates.Count != 0 && TotalRecipeRate != null)
+            {
+                TotalRecipeRate = new TotalRate
+                {
+                    RateAverage = Convert.ToInt32(Rates.Select(x => Convert.ToInt32(x)).Average()),
+                    RateAmounts = Rates.Count
+                };
+
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Domain;
+using Model.Domain.Recipe;
 
 namespace Model.DataAccess
 {
@@ -16,5 +17,6 @@ namespace Model.DataAccess
         DayRecipe SelectRecipeOfTheDayRowFromDatabase();
         void InsertRecipeRateIntoDatabase(int recipeId, int rate, string username);
         RecipeRate SelectUserRateDataFromRateTable(int id, string username);
+        List<RecipeRate> SelectRecipeRates(List<int> recipeIds);
     }
 }

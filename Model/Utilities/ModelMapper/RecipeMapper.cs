@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Domain;
+using Model.Domain.Recipe;
 
 namespace Model.Utilities.ModelMapper
 {
@@ -48,9 +49,35 @@ namespace Model.Utilities.ModelMapper
                 recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
                 recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
+                recipe.Rates = dataReader[10] == DBNull.Value
+                    ? new List<string>()
+                    : dataReader[10].ToString().Split(',').Select(x => x).ToList();
+                recipe.DishId = dataReader[11] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(11));
+                recipe.DishSubCategoryId = dataReader[12] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(12));
+                recipe.DishMainCategoryId = dataReader[13] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(13));
+                recipe.IngredientIds = dataReader[14] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(14).ToString());
+                recipe.IngredientCategoryIds = dataReader[15] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(15).ToString());
+                recipe.FeatureIds = dataReader[16] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(16).ToString());
+                recipe.FeatureCategoryIds = dataReader[17] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(17).ToString());
+                
             }
             dataReader.Close();
             return recipe;
+        }
+
+        public List<RecipeRate> SelectRecipesRates(OdbcDataReader dataReader)
+        {
+            var recipeRates = new List<RecipeRate>();
+            while (dataReader.Read())
+            {
+                var recipeRate = new RecipeRate();
+                recipeRate.recipeId = dataReader[0] == DBNull.Value ? 0 : dataReader.GetInt32(0);
+                recipeRate.recipeRate = dataReader[1] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(1));
+                recipeRate.userName = dataReader[2] == DBNull.Value ? "" : dataReader.GetString(2);
+                recipeRates.Add(recipeRate);
+            }
+
+            return recipeRates;
         }
 
         public DayRecipe SelectRecipeOfTheDayRowFromDatabaseMapper(OdbcDataReader dataReader)
@@ -113,7 +140,11 @@ namespace Model.Utilities.ModelMapper
                     recipe.IngredientCategoryIds = dataReader[13] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(13).ToString());
                     recipe.FeatureIds = dataReader[14] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(14).ToString());
                     recipe.FeatureCategoryIds = dataReader[15] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(15).ToString());
+                    recipe.Rates = dataReader[16] == DBNull.Value
+                        ? new List<string>()
+                        : dataReader[16].ToString().Split(',').Select(x => x).ToList();
 
+                    //recipe.CalculateTotalRecipeRate();
                     recipeList.Add(recipe);
                 }
                 catch (Exception e)
@@ -132,7 +163,6 @@ namespace Model.Utilities.ModelMapper
 
             while (dataReader.Read())
             {
-
                 recipeRatesList.recipeId = dataReader.GetInt32(0);
                 recipeRatesList.recipeRate = dataReader.GetInt32(1);
                 recipeRatesList.userName = dataReader.GetString(2);

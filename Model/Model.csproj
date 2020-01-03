@@ -65,6 +65,7 @@
     <Compile Include="Domain\Ingredient\IngredientCategory.cs" />
     <Compile Include="Domain\Ingredient\IngredientCategoryXref.cs" />
     <Compile Include="Domain\Recipe\DayRecipe.cs" />
+    <Compile Include="Domain\Recipe\TotalRate.cs" />
     <Compile Include="Domain\Recipe\Recipe.cs" />
     <Compile Include="Domain\Recipe\RecipeRate.cs" />
     <Compile Include="Domain\Recipe\RecipeSource.cs" />

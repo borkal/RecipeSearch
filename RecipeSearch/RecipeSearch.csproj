@@ -163,6 +163,7 @@
     <Compile Include="Models\Recipe\RecipeModel.cs" />
     <Compile Include="Models\Recipe\RecipePreviewModel.cs" />
     <Compile Include="Models\Recipe\RecipeRates.cs" />
+    <Compile Include="Models\Recipe\RecipeTotalRate.cs" />
     <Compile Include="Models\SearchRecipe\SearchRecipeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DishService.cs" />
