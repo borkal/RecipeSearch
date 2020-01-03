@@ -37,7 +37,5 @@ namespace Model.Utilities.QueryBuilder
                    "GROUP BY DM.id";
 
         }
-            
-
     }
 }

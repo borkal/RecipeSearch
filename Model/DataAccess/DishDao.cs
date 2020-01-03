@@ -27,12 +27,6 @@ namespace Model.DataAccess
             _dishQuery = dishQueryBuilder;
             _dishMapper = dishMapper;
         }
-        //public List<Dish> SelectRecipeDishByRecipeId(int recipeId)
-        //{
-        //    var query = _dishQuery.SelectRecipeDishByRecipeId(recipeId);
-        //    var dbReader = _odbcManager.ExecuteReadQuery(query);
-        //    return _dishMapper.SelectRecipeDishByRecipeIdMapper(dbReader);
-        //}
 
         public List<Dish> SelectDishes()
         {

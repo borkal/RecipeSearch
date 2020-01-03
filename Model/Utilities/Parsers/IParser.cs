@@ -13,6 +13,5 @@ namespace Model.Utilities.Parsers
         List<string> GetDescription();
         List<string> GetIngredients();
         bool Process { get; set; }
-
     }
 }

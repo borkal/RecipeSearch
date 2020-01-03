@@ -139,22 +139,20 @@ namespace RecipeSearch.Controllers
             var lastDayRowInDatabase = _recipeDao.SelectRecipeOfTheDayRowFromDatabase();
             int id;
 
-            if (lastDayRowInDatabase.DayRecipeDate == System.DateTime.Now.ToShortDateString())
+            if (lastDayRowInDatabase.DayRecipeDate == System.DateTime.Now.ToString("yyyy-MM-dd"))
             {
                 id = lastDayRowInDatabase.DayRecipeRecipeId;
             }
             else
             {
-                Random r = new Random();
-                int range = r.Next(1429, 2239);
-                id = range;
-                string date = System.DateTime.Now.ToShortDateString();
+                id = randomRecipeId();
+                string date = System.DateTime.Now.ToString("yyyy-MM-dd");
                 _recipeDao.InsertRecipeOfTheDayRowToDatabase(date, id);
             }
 
             try
             {
-                var result = await _recipeService.SelectDayRecipeModel(id);
+                var result = await _recipeService.SelectRecipeModelByRecipeId(id);
                 return Ok(new
                 {
                     recipe = result

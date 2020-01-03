@@ -70,7 +70,6 @@ namespace Model.Utilities.Parsers
                 }
             }
 
-
             return descriptionList;
         }
 
@@ -122,7 +121,7 @@ namespace Model.Utilities.Parsers
             throw new NotImplementedException();
         }
 
-        public bool CheckIfImageExist(string imgUrl) //jakies problemy, pytac Borysa ocb.
+        public bool CheckIfImageExist(string imgUrl)
         {
             bool process = false;
             var httpRequest = (HttpWebRequest)WebRequest.Create(imgUrl);
@@ -138,7 +137,6 @@ namespace Model.Utilities.Parsers
             }
 
             return process;
-
         }
 
         public void InitXpathPatterns()

@@ -45,6 +45,5 @@ namespace Model.Utilities.QueryBuilder
                 "RF.feature_id " +
                 "FROM recipe_feature RF";
         }
-
     }
 }

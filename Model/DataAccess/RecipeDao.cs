@@ -68,13 +68,6 @@ namespace Model.DataAccess
             _odbcManager.ExecuteUpdateQuery(query);
         }
 
-        public Recipe SelectDayRecipe(int id)
-        {
-            var query = _recipeQuery.SelectDayRecipe(id);
-            var dbReader = _odbcManager.ExecuteReadQuery(query);
-            return _recipeMapper.SelectDayRecipeMapper(dbReader);
-        }
-
         public List<Recipe> SelectRecipesByBlogId(int blogId)
         {
             var query = _recipeQuery.SelectRecipesByBlogId(blogId);

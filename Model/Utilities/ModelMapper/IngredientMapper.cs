@@ -76,7 +76,5 @@ namespace Model.Utilities.ModelMapper
             return new List<int>();
 
         }
-
-
     }
 }

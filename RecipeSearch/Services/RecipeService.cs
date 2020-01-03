@@ -116,41 +116,6 @@ namespace RecipeSearch.RecipeService
             return recipeModel;
         }
 
-        internal async Task<RecipeModel> SelectDayRecipeModel(int id)
-        { 
-            var recipe = _recipeDao.SelectDayRecipe(id);
-            List<string> recipeIngredients = _recipeDao.SelectRecipeIngredientsFromDatabase(recipe.RecipeId);
-            List<string> recipeDescription = _recipeDao.SelectRecipeDescriptionFromDatabase(recipe.RecipeId);
-            IParser blog = null;
-
-            switch (recipe.BlogId)
-            {
-                case (int)Blogs.FantazjeKulinarneMagdyK:
-                    blog = new FantazjeMagdyKParser(recipe.RecipeUrl);
-                    break;
-                case (int)Blogs.KwestiaSmaku:
-                    blog = new KwestiaSmakuParser(recipe.RecipeUrl);
-                    break;
-                case (int)Blogs.MojeDietetyczneFanaberie:
-                    blog = new MojeDietetyczneFanaberieParser(recipe.RecipeUrl);
-                    break;
-            }
-
-            var recipeModel = new RecipeModel
-            {
-                Blog = recipe.BlogName,
-                Blog_Url = recipe.Blog_Url,
-                Description = recipeDescription.Any() ? recipeDescription : blog.GetDescription(),
-                Image_Url = recipe.RecipeImage,
-                Ingredients = recipeIngredients.Any() ? recipeIngredients : blog.GetIngredients(),
-                Id = recipe.RecipeId.ToString(),
-                Source_Url = recipe.RecipeUrl,
-                Title = recipe.RecipeName
-            };
-
-            return recipeModel;
-        }
-
         internal async Task InsertRecipeRateIntoDatabase(int recipeId, int rate, string username)
         {
             _recipeDao.InsertRecipeRateIntoDatabase(recipeId, rate, username);

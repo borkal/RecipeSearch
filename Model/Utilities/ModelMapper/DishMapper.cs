@@ -54,8 +54,5 @@ namespace Model.Utilities.ModelMapper
             dataReader.Close();
             return dishList;
         }
-
-
-
     }
 }

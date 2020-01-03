@@ -72,7 +72,6 @@ namespace Model.Utilities.Parsers
             return descriptionList;
         }
 
-
         public List<string> GetIngredients()
         {
             var ingredientsList = new List<string>();
@@ -114,7 +113,6 @@ namespace Model.Utilities.Parsers
             return process;
 
         }
-
 
         public void InitXpathPatterns()
         {

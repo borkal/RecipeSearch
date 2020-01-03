@@ -64,27 +64,7 @@ namespace Model.Utilities.QueryBuilder
             return "INSERT INTO dayrecipe " +
             $"values('{date}', {recipeId})";
         }
-        
-        public string SelectDayRecipe(int id)
-        {
-                var query = "SELECT " +
-                "R.id," +
-                "R.comments," +
-                "R.createdate," +
-                "R.image," +
-                "R.name," +
-                "R.url," +
-                "R.status, " +
-                "RS.canonicalurl, " +
-                "RS.id, " +
-                "RS.name " +
-                "FROM recipe R  " +
-                "LEFT JOIN recipesource RS on R.source_id = RS.id " +
-                $"WHERE R.id = {id}";
 
-            return query;
-
-        }
         public string SelectRecipesByBlogId(int blogId)
         {
             var query = "SELECT " +

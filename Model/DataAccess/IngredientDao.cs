@@ -26,7 +26,6 @@ namespace Model.DataAccess
             _odbcManager = odbcManager;
             _ingredientQuery = ingredientQueryBuilder;
             _ingredientMapper = ingredientMapper;
-
         }
 
         public List<Ingredient> SelectIngredients()

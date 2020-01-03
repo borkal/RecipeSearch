@@ -11,7 +11,7 @@ namespace Model.Domain
         public int IngredientId { get; set; }
         public string IngredientName { get; set; }
         public List<int> IngredientCategoryIds { get; set; }
-        public int IngredientQuantity { get; set; } //default??
+        public int IngredientQuantity { get; set; }
         public bool IngredientCitrus { get; set; }
         public bool IngredientNut { get; set; }
         public bool IngredientSugar { get; set; }

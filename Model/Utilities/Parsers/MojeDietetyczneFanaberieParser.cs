@@ -10,11 +10,6 @@ namespace Model.Utilities.Parsers
 {
     public class MojeDietetyczneFanaberieParser : IParser 
     {
-        //FANABERIE PRZEPISY ID 2229, 2218 - DO SPRAWDZENIA CO TO JEST! kilka przepisow w jednym linku??
-        //przepisy dwujezyczne - np. 1367 - co z tym??
-        //1396, 1414 ???
-        //tytuly nie zawsze zawieraja nazwe przepisu - jak to bedzie z wyszukiwarka?
-        //1426 - zadanie zostalo przerwane - problem z polaczeniem z baza? do sprawdzenia, bo skladniki wypisalo
         private static readonly string DivBodyIngredientsPattern = "//*[@class='post-body entry-content']";
         private static readonly string DivBodyDescriptionPattern = "//div[@class='post-body entry-content']";
         private static readonly string DivBodyImagePattern = "//*[@class='separator']";
@@ -29,7 +24,7 @@ namespace Model.Utilities.Parsers
         {
             RecipeToProcessUrl = url;
             RecipeWebDocument = new HtmlWeb();
-            try //potrzebne??
+            try
             {
                 RecipeHtmlDocument = RecipeWebDocument.Load(RecipeToProcessUrl);
             }
@@ -164,7 +159,6 @@ namespace Model.Utilities.Parsers
             }
 
             return process;
-
         }
     }
 }

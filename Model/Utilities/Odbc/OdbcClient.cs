@@ -49,6 +49,5 @@ namespace Model.Utilities.Odbc
         {
             _odbcConnection.Close();
         }
-
     }
 }

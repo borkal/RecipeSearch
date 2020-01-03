@@ -83,7 +83,6 @@ namespace RecipeSearch.Controllers
             {
                 return InternalServerError(e);
             }
-
         }
     }
 }

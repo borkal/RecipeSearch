@@ -20,7 +20,6 @@ namespace Model.DataAccess
         {
 
         }
-
         public FeatureDao(OdbcManager odbcManager, FeatureQueryBuilder featureQueryBuilder, FeatureMapper featureMapper)
         {
             _odbcManager = odbcManager;

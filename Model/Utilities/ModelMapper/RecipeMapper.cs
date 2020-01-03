@@ -48,7 +48,6 @@ namespace Model.Utilities.ModelMapper
                 recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
                 recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
                 recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
-
             }
             dataReader.Close();
             return recipe;
@@ -66,29 +65,6 @@ namespace Model.Utilities.ModelMapper
 
             dataReader.Close();
             return dayRecipe;
-        }
-
-        public Recipe SelectDayRecipeMapper(OdbcDataReader dataReader)
-        {
-            var recipe = new Recipe();
-            while (dataReader.Read())
-            {
-
-                recipe.RecipeId = dataReader.GetInt32(0);
-                recipe.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
-                recipe.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
-                recipe.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
-                recipe.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
-                recipe.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
-                recipe.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
-                recipe.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
-                recipe.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
-                recipe.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
-
-            }
-
-            dataReader.Close();
-            return recipe;
         }
 
         public List<Recipe> SelectRecipesByBlogIdMapper(OdbcDataReader dataReader)
@@ -173,8 +149,7 @@ namespace Model.Utilities.ModelMapper
                 return text.Replace(",NULL", "").Trim().Split(',').Select(x => Convert.ToInt32(x)).ToList();
             }
 
-            return new List<int>();
-            
+            return new List<int>();   
         }
     }
 }

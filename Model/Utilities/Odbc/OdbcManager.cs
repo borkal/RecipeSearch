@@ -21,7 +21,6 @@ namespace Model.Utilities.Odbc
             _odbcCommand = new OdbcCommand();
 
             _odbcCommand.Connection = _odbcClient.GetConnection();
-
         }
 
         internal void BeginTransaction()
@@ -54,14 +53,12 @@ namespace Model.Utilities.Odbc
             _log.Info($"(The count of the updated rows: {updatedRows})");
             Commit();
             Dispose();
-
         }
 
         public void Commit()
         {
             _odbcCommand.Transaction.Commit();
         }
-
 
         public void Dispose()
         {
