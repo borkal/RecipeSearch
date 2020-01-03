@@ -94,10 +94,17 @@ namespace Model.DataAccess
             _odbcManager.ExecuteUpdateQuery(query);
         }
 
-        public void InsertRecipeRateIntoDatabase(int recipeId, int rate)
+        public void InsertRecipeRateIntoDatabase(int recipeId, int rate, string username)
         {
-            var query = _recipeQuery.InsertRecipeRateIntoDatabase(recipeId, rate);
+            var query = _recipeQuery.InsertRecipeRateIntoDatabase(recipeId, rate, username);
             _odbcManager.ExecuteUpdateQuery(query);
+        }
+
+        public RecipeRate SelectUserRateDataFromRateTable(int id, string username)
+        {
+            var query = _recipeQuery.SelectUserRateDataFromRateTable(id, username);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectUserRateDataFromRateTableMapper(dbReader);
         }
     }
 }

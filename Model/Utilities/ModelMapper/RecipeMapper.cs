@@ -144,13 +144,26 @@ namespace Model.Utilities.ModelMapper
                 {
                     Console.WriteLine(e);
                     throw;
-                }
-                
-                
-               
+                }    
             }
             dataReader.Close();
             return recipeList;
+        }
+
+        public RecipeRate SelectUserRateDataFromRateTableMapper(OdbcDataReader dataReader)
+        {
+            var recipeRatesList = new RecipeRate();
+
+            while (dataReader.Read())
+            {
+
+                recipeRatesList.recipeId = dataReader.GetInt32(0);
+                recipeRatesList.recipeRate = dataReader.GetInt32(1);
+                recipeRatesList.userName = dataReader.GetString(2);
+
+            }
+            dataReader.Close();
+            return recipeRatesList;
         }
 
         private List<int> ConvertStringToIntList(string text)

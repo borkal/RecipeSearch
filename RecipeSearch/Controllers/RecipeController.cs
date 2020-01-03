@@ -80,12 +80,12 @@ namespace RecipeSearch.Controllers
                     Vegetarian = vegetarian
                 };
 
-                var result = await _recipeService.SelectRecipePreviewModelBySearchText(searchRecipeModel);              
-                return Ok(new 
+                var result = await _recipeService.SelectRecipePreviewModelBySearchText(searchRecipeModel);
+                return Ok(new
                 {
                     count = result.Count,
                     recipes = result
-                    
+
                 });
             }
             catch (Exception e)
@@ -100,7 +100,7 @@ namespace RecipeSearch.Controllers
             try
             {
                 var result = await _recipeService.SelectRecipeModelByRecipeId(id);
-                return Ok(new 
+                return Ok(new
                 {
                     recipe = result
                 });
@@ -139,7 +139,7 @@ namespace RecipeSearch.Controllers
             var lastDayRowInDatabase = _recipeDao.SelectRecipeOfTheDayRowFromDatabase();
             int id;
 
-            if(lastDayRowInDatabase.DayRecipeDate == System.DateTime.Now.ToShortDateString())
+            if (lastDayRowInDatabase.DayRecipeDate == System.DateTime.Now.ToShortDateString())
             {
                 id = lastDayRowInDatabase.DayRecipeRecipeId;
             }
@@ -168,12 +168,40 @@ namespace RecipeSearch.Controllers
 
         [HttpPost]
         [Route("recipe/insertRecipeRate")]
-        public async Task<IHttpActionResult> InsertRecipeRate(int recipeId, int rate)
+        public async Task<IHttpActionResult> InsertRecipeRate(int recipeId, int rate, string username)
         {
             try
             {
-                await _recipeService.InsertRecipeRateIntoDatabase(recipeId, rate);
-                return Ok();
+                var check = _recipeDao.SelectUserRateDataFromRateTable(recipeId, username);
+
+                if (check.recipeId !=0 && check.userName != null)
+                {
+
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Forbidden, $"User {username} already rated recipe with id {recipeId}! "));
+                }
+                else
+                {
+                    await _recipeService.InsertRecipeRateIntoDatabase(recipeId, rate, username);
+                    return Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("recipe/searchUserRecipeRate")]
+        public async Task<IHttpActionResult> searchUserRecipeRate(int id, string username)
+        {
+            try
+            {
+                var result = await _recipeService.SelectUserRateDataFromRateTable(id, username);
+                return Ok(new
+                {
+                    recipeRate = result
+                });
             }
             catch (Exception e)
             {

@@ -151,9 +151,23 @@ namespace RecipeSearch.RecipeService
             return recipeModel;
         }
 
-        internal async Task InsertRecipeRateIntoDatabase(int recipeId, int rate)
+        internal async Task InsertRecipeRateIntoDatabase(int recipeId, int rate, string username)
         {
-            _recipeDao.InsertRecipeRateIntoDatabase(recipeId, rate);
+            _recipeDao.InsertRecipeRateIntoDatabase(recipeId, rate, username);
+        }
+
+        internal async Task<RecipeRates> SelectUserRateDataFromRateTable(int id, string username)
+        {
+            var recipeUserRate = _recipeDao.SelectUserRateDataFromRateTable(id, username);
+
+            var recipeModel = new RecipeRates
+            {
+                recipeId = recipeUserRate.recipeId,
+                recipeRate = recipeUserRate.recipeRate,
+                userName = recipeUserRate.userName
+            };
+
+            return recipeModel;
         }
     }
 }

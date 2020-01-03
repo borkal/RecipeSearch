@@ -66,6 +66,7 @@
     <Compile Include="Domain\Ingredient\IngredientCategoryXref.cs" />
     <Compile Include="Domain\Recipe\DayRecipe.cs" />
     <Compile Include="Domain\Recipe\Recipe.cs" />
+    <Compile Include="Domain\Recipe\RecipeRate.cs" />
     <Compile Include="Domain\Recipe\RecipeSource.cs" />
     <Compile Include="Domain\Recipe\SearchRecipe.cs" />
     <Compile Include="Enums\Blogs.cs" />

@@ -117,10 +117,21 @@ namespace Model.Utilities.QueryBuilder
                    $"values({recipeId},'{descriptionText}',{orderId})";
         }
 
-        public string InsertRecipeRateIntoDatabase(int recipeId, int rate)
+        public string InsertRecipeRateIntoDatabase(int recipeId, int rate, string username)
         {
             return "INSERT INTO reciperate " +
-                   $"values({recipeId}, {rate})";
+                   $"values({recipeId}, {rate}, '{username}')";
+        }
+
+        public string SelectUserRateDataFromRateTable(int id, string username)
+        {
+            var query = "SELECT " +
+                        "RR.recipeid, "+
+                        "RR.rate, "+
+                        "RR.username " +
+                        "FROM reciperate RR " +
+                        $"WHERE RR.recipeid = {id} AND RR.username = '{username}'";
+            return query;
         }
 
         public string SelecAllRecipeNamesAndIds() //testowa metoda
