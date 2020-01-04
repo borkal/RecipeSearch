@@ -34,7 +34,7 @@ namespace Model.Domain.Recipe
         public TotalRate TotalRecipeRate { get; set; }
         public void CalculateTotalRecipeRate()
         {
-            if (Rates.Count != 0 && TotalRecipeRate != null)
+            if (Rates.Count != 0)
             {
                 TotalRecipeRate = new TotalRate
                 {

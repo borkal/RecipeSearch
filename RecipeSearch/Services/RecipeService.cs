@@ -74,13 +74,16 @@ namespace RecipeSearch.RecipeService
                     IngredientIds = recipe.IngredientIds,
                     IngredientCategoryIds = recipe.IngredientCategoryIds,
                     FeatureIds = recipe.FeatureIds,
-                    FeatureCategoryIds = recipe.FeatureCategoryIds,
-                    Rate = new RecipeTotalRate
+                    FeatureCategoryIds = recipe.FeatureCategoryIds
+                };
+
+                recipeModel.Rate = recipe.TotalRecipeRate != null
+                    ? new RecipeTotalRate
                     {
                         Amount = recipe.TotalRecipeRate.RateAmounts,
                         Average = recipe.TotalRecipeRate.RateAverage
                     }
-                };
+                    : new RecipeTotalRate { Average = 0, Amount = 0 };
 
                 recipeList.Add(recipeModel);
             }

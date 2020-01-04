@@ -51,15 +51,8 @@ namespace Model.DataAccess
             
             mapper.ForEach(x =>
             {
-                x.Rates = rates.Select(y => y.recipeRate.ToString()).ToList();
+                x.Rates = rates.Where(z => z.recipeId == x.RecipeId).Select(y => y.recipeRate.ToString()).ToList();
                 x.CalculateTotalRecipeRate();
-                //var recipeAverageRate = Convert.ToInt32(rates.Where(y => y.recipeId == x.RecipeId).Select(z => z.recipeRate).Average());
-                //var recipeAmountRate = rates.Count;
-                //x.TotalRecipeRate = new TotalRate
-                //{
-                //    RateAverage = recipeAverageRate,
-                //    RateAmounts = recipeAmountRate
-                //};
             });
             return mapper;
         }
@@ -71,7 +64,7 @@ namespace Model.DataAccess
             var mapper = _recipeMapper.SelectRecipeByRecipeIdMapper(dbReader);
             var rates = SelectRecipeRates(new List<int> {mapper.RecipeId});
 
-            mapper.Rates = rates.Select(x => x.recipeRate.ToString()).ToList();
+            mapper.Rates = rates.Where(x => x.recipeId == mapper.RecipeId).Select(y => y.recipeRate.ToString()).ToList();
             mapper.CalculateTotalRecipeRate();
 
             return mapper;
