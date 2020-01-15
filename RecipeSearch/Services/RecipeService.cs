@@ -121,6 +121,13 @@ namespace RecipeSearch.RecipeService
                 Id = recipeId.ToString(),
                 Source_Url = recipe.RecipeUrl,
                 Title = recipe.RecipeName,
+                DishId = recipe.DishId,
+                DishSubCategoryId = recipe.DishSubCategoryId,
+                DishMainCategoryId = recipe.DishMainCategoryId,
+                IngredientIds = recipe.IngredientIds,
+                IngredientCategoryIds = recipe.IngredientCategoryIds,
+                FeatureIds = recipe.FeatureIds,
+                FeatureCategoryIds = recipe.FeatureCategoryIds
             };
             
 

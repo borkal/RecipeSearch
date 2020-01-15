@@ -19,6 +19,13 @@ namespace RecipeSearch.Models
         public string Image_Url { get; set; }
         public string Blog_Url { get; set; }
         public string Title { get; set; }
+        public int DishId { get; set; }
+        public int DishSubCategoryId { get; set; }
+        public int DishMainCategoryId { get; set; }
+        public List<int> IngredientIds { get; set; }
+        public List<int> IngredientCategoryIds { get; set; }
+        public List<int> FeatureIds { get; set; }
+        public List<int> FeatureCategoryIds { get; set; }
         public RecipeTotalRate Rate { get; set; }
         
     }
