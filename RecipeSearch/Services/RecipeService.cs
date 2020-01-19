@@ -90,6 +90,65 @@ namespace RecipeSearch.RecipeService
 
             return recipeList;
         }
+        internal async Task<List<RecipePreviewModel>> SelectRecipePreviewModelBySearchTextPaged(SearchRecipeModel2 searchRecipeModel)
+        {
+            var foundRecipes = _recipeDao.SelectAlLRecipesBySearchTextPaged(new SearchRecipe2
+            {
+                Search = searchRecipeModel.Search,
+                PageNumber = searchRecipeModel.PageNumber,
+                PageSize = searchRecipeModel.PageSize,
+                DishIds = searchRecipeModel.DishIds,
+                DishSubCategoryIds = searchRecipeModel.DishSubCategoryIds,
+                DishMainCategoryIds = searchRecipeModel.DishMainCategoryIds,
+                IngredientIds = searchRecipeModel.IngredientIds,
+                IngredientCategoryIds = searchRecipeModel.IngredientCategoryIds,
+                FeatureIds = searchRecipeModel.FeatureIds,
+                FeatureCategoryIds = searchRecipeModel.FeatureCategoryIds,
+                Citrus = searchRecipeModel.Citrus,
+                Nut = searchRecipeModel.Nut,
+                Sugar = searchRecipeModel.Sugar,
+                Mushroom = searchRecipeModel.Mushroom,
+                Gluten = searchRecipeModel.Gluten,
+                CowMilk = searchRecipeModel.CowMilk,
+                Wheat = searchRecipeModel.Wheat,
+                Egg = searchRecipeModel.Egg,
+                Vegetarian = searchRecipeModel.Vegetarian
+            }).ToList();
+
+
+            var recipeList = new List<RecipePreviewModel>();
+
+            foreach (var recipe in foundRecipes)
+            {
+                var recipeModel = new RecipePreviewModel()
+                {
+                    Id = recipe.RecipeId.ToString(),
+                    Blog = recipe.BlogName,
+                    Image_Url = recipe.RecipeImage,
+                    Title = recipe.RecipeName,
+                    Url = recipe.RecipeUrl,
+                    DishId = recipe.DishId,
+                    DishSubCategoryId = recipe.DishSubCategoryId,
+                    DishMainCategoryId = recipe.DishMainCategoryId,
+                    IngredientIds = recipe.IngredientIds,
+                    IngredientCategoryIds = recipe.IngredientCategoryIds,
+                    FeatureIds = recipe.FeatureIds,
+                    FeatureCategoryIds = recipe.FeatureCategoryIds,
+                };
+
+                recipeModel.Rate = recipe.TotalRecipeRate != null
+                    ? new RecipeTotalRate
+                    {
+                        Amount = recipe.TotalRecipeRate.RateAmounts,
+                        Average = recipe.TotalRecipeRate.RateAverage
+                    }
+                    : new RecipeTotalRate { Average = 0, Amount = 0 };
+
+                recipeList.Add(recipeModel);
+            }
+
+            return recipeList;
+        }
 
         internal async Task<RecipeModel> SelectRecipeModelByRecipeId(int recipeId)
         {

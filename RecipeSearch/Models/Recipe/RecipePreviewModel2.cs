@@ -4,21 +4,17 @@ using System.Linq;
 using System.Web;
 using Model.Domain;
 using Model.Domain.Recipe;
-using RecipeSearch.Models.Recipe;
 
 
-namespace RecipeSearch.Models
+namespace RecipeSearch.Models.Recipe
 {
-    public class RecipeModel
+    public class RecipePreviewModel2
     {
-        public string Blog { get; set; }
-        public List<string> Ingredients { get; set; }
-        public List<string> Description { get; set; }
-        public string Source_Url { get; set; }
         public string Id { get; set; }
-        public string Image_Url { get; set; }
-        public string Blog_Url { get; set; }
+        public string Blog { get; set; }
         public string Title { get; set; }
+        public string Url { get; set; }
+        public string Image_Url { get; set; }
         public int DishId { get; set; }
         public int DishSubCategoryId { get; set; }
         public int DishMainCategoryId { get; set; }
@@ -31,7 +27,7 @@ namespace RecipeSearch.Models
         const int maxPageSize = 20;
         public int PageNumber { get; set; } = 1;
 
-        private int _pageSize = 10;
+        private int _pageSize;
         public int PageSize
         {
             get

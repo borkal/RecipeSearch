@@ -9,6 +9,7 @@ using Model.Domain.Recipe;
 using Model.Utilities.ModelMapper;
 using Model.Utilities.Odbc;
 using Model.Utilities.QueryBuilder;
+using RecipeSearch.Models.Recipe;
 
 namespace Model.DataAccess
 {
@@ -47,6 +48,20 @@ namespace Model.DataAccess
             var query = _recipeQuery.SelectAlLRecipesBySearchText(searchRecipe);
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             var mapper = _recipeMapper.SelectAlLRecipesBySearchText(dbReader);
+            var rates = SelectRecipeRates(mapper.Select(x => x.RecipeId).ToList());
+            
+            mapper.ForEach(x =>
+            {
+                x.Rates = rates.Where(z => z.recipeId == x.RecipeId).Select(y => y.recipeRate.ToString()).ToList();
+                x.CalculateTotalRecipeRate();
+            });
+            return mapper;
+        }
+        public List<Recipe> SelectAlLRecipesBySearchTextPaged(SearchRecipe2 searchRecipe)
+        {
+            var query = _recipeQuery.SelectAlLRecipesBySearchTextPaged(searchRecipe);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            var mapper = _recipeMapper.SelectAlLRecipesBySearchTextPaged(dbReader);
             var rates = SelectRecipeRates(mapper.Select(x => x.RecipeId).ToList());
             
             mapper.ForEach(x =>

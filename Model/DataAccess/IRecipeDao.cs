@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model.Domain;
 using Model.Domain.Recipe;
+using RecipeSearch.Models.Recipe;
 
 namespace Model.DataAccess
 {
@@ -12,6 +13,7 @@ namespace Model.DataAccess
     {
         Recipe SelectRecipeByRecipeId(int recipeId);
         List<Recipe> SelectAlLRecipesBySearchText(SearchRecipe searchRecipe);
+        List<Recipe> SelectAlLRecipesBySearchTextPaged(SearchRecipe2 searchRecipe);
         List<string> SelectRecipeIngredientsFromDatabase(int recipeId);
         List<string> SelectRecipeDescriptionFromDatabase(int recipeId);
         DayRecipe SelectRecipeOfTheDayRowFromDatabase();
