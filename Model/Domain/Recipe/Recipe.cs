@@ -43,6 +43,14 @@ namespace Model.Domain.Recipe
                 };
 
             }
+            else
+            {
+                TotalRecipeRate = new TotalRate()
+                {
+                    RateAmounts = 0,
+                    RateAverage = 0
+                };
+            }
         }
     }
 }

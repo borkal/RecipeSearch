@@ -57,6 +57,9 @@ namespace RecipeSearch.RecipeService
 
             }).ToList();
 
+            foundRecipes = EliminateAndOrCategoriesProblem(foundRecipes, searchRecipeModel);
+            PopulateRecipeRates(foundRecipes);
+
             var recipeList = new List<RecipePreviewModel>();
 
             foreach (var recipe in foundRecipes)
@@ -115,6 +118,8 @@ namespace RecipeSearch.RecipeService
                 Vegetarian = searchRecipeModel.Vegetarian
             }).ToList();
 
+            foundRecipes = EliminateAndOrCategoriesProblem(foundRecipes, searchRecipeModel);
+            PopulateRecipeRates(foundRecipes);
 
             var recipeList = new List<RecipePreviewModel>();
 
@@ -170,6 +175,8 @@ namespace RecipeSearch.RecipeService
                     break;
             }
 
+            PopulateRecipeRates(new List<Recipe>() { recipe });
+
             var recipeModel = new RecipeModel
             {
                 Blog = recipe.BlogName,
@@ -186,17 +193,13 @@ namespace RecipeSearch.RecipeService
                 IngredientIds = recipe.IngredientIds,
                 IngredientCategoryIds = recipe.IngredientCategoryIds,
                 FeatureIds = recipe.FeatureIds,
-                FeatureCategoryIds = recipe.FeatureCategoryIds
-            };
-            
-
-            recipeModel.Rate = recipe.TotalRecipeRate != null
-                ? new RecipeTotalRate
+                FeatureCategoryIds = recipe.FeatureCategoryIds,
+                Rate = new RecipeTotalRate
                 {
                     Amount = recipe.TotalRecipeRate.RateAmounts,
                     Average = recipe.TotalRecipeRate.RateAverage
                 }
-                : new RecipeTotalRate() {Average = 0, Amount = 0};
+            };
 
             return recipeModel;
         }
@@ -219,5 +222,50 @@ namespace RecipeSearch.RecipeService
 
             return recipeModel;
         }
+        private void PopulateRecipeRates(List<Recipe> recipes)
+        {
+            if (recipes.Count > 0)
+            {
+                var recipeIds = recipes.Select(x => x.RecipeId).ToList();
+                var recipesRates = _recipeDao.SelectRecipeRates(recipeIds);
+
+                recipes.ForEach(x =>
+                {
+                    x.Rates = recipesRates.Where(z => z.recipeId == x.RecipeId).Select(y => y.recipeRate.ToString()).ToList();
+                    x.CalculateTotalRecipeRate();
+                });
+            }
+        }
+
+        private List<Recipe> EliminateAndOrCategoriesProblem(List<Recipe> foundRecipes, SearchRecipeModel searchRecipeModel)
+        {
+            var recipes = new List<Recipe>();
+
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.FeatureIds.All(y => x.FeatureIds.Contains(y))).ToList();
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.FeatureCategoryIds.All(y => x.FeatureCategoryIds.Contains(y))).ToList();
+
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.IngredientCategoryIds.All(y => x.IngredientCategoryIds.Contains(y))).ToList();
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.IngredientIds.All(y => x.IngredientIds.Contains(y))).ToList();
+
+            recipes.AddRange(foundRecipes);
+            return recipes;
+        }
+
+        private List<Recipe> EliminateAndOrCategoriesProblem(List<Recipe> foundRecipes, SearchRecipeModel2 searchRecipeModel)
+        {
+            var recipes = new List<Recipe>();
+
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.FeatureIds.All(y => x.FeatureIds.Contains(y))).ToList();
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.FeatureCategoryIds.All(y => x.FeatureCategoryIds.Contains(y))).ToList();
+
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.IngredientCategoryIds.All(y => x.IngredientCategoryIds.Contains(y))).ToList();
+            foundRecipes = foundRecipes.Where(x => searchRecipeModel.IngredientIds.All(y => x.IngredientIds.Contains(y))).ToList();
+
+            recipes.AddRange(foundRecipes);
+            return recipes;
+        }
     }
+
+
+
 }
