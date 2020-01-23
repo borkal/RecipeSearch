@@ -30,11 +30,10 @@ namespace Model.Utilities.QueryBuilder
         public string SelectDishMainCategories()
         {
             return "SELECT " +
-                   "DM.id, " +
-                   "DM.name " +
-                   "FROM dishcategory DS " +
-                   "JOIN dishCategory DM on DS.parent_id = DM.id " +
-                   "GROUP BY DM.id";
+                   "id, " +
+                   "name " +
+                   "FROM dishcategory " +
+                   "WHERE parent_id IS NULL OR parent_id = 0";
 
         }
     }
