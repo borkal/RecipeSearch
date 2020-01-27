@@ -270,16 +270,27 @@ namespace RecipeSearch.Controllers
             try
             {
                 var check = _recipeDao.SelectUserRateDataFromRateTable(recipeId, username);
+                bool exists;
 
-                if (check.recipeId !=0 && check.userName != null)
+                if (check.recipeId != 0 && check.userName != null)
                 {
-
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Forbidden, $"User {username} already rated recipe with id {recipeId}! as {check.recipeRate} !"));
+                    exists = true;
+                    return Ok(new
+                    {
+                        message = $"User {username} already rated recipe with id {recipeId}! as {check.recipeRate} !",
+                        Exists = exists
+                    });
                 }
                 else
                 {
+                    exists = false;
                     await _recipeService.InsertRecipeRateIntoDatabase(recipeId, rate, username);
-                    return Ok();
+                    return Ok(new
+                    {
+                        Exists = exists,
+                        amount = _recipeService.SelectRecipeModelByRecipeId(recipeId).Result.Rate.Amount,
+                        average = _recipeService.SelectRecipeModelByRecipeId(recipeId).Result.Rate.Average
+                    });
                 }
             }
             catch (Exception e)
@@ -299,6 +310,59 @@ namespace RecipeSearch.Controllers
                 {
                     recipeRate = result
                 });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("recipe/searchUserFavsRecipes")]
+        public async Task<IHttpActionResult> searchUserFavsRecipes(string username)
+        {
+            try
+            {
+                var result = await _recipeService.SelectFavRecipesByUser(username);
+                return Ok(new
+                {
+                    recipeFavs = result
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("recipe/InsertFavRecipe")]
+        public async Task<IHttpActionResult> InsertFavRecipe(int recipeId, string username)
+        {
+            try
+            {
+                var check = _recipeDao.SelectFavRecipesByUser(username);
+                bool exists;
+
+                if (check.Contains(recipeId))
+                {
+                    exists = true;
+                    return Ok(new
+                    {
+                        message = $"User {username} already added recipe with id {recipeId} to favourite recipes !",
+                        Exists = exists
+                    });
+                }
+                else
+                {
+                    exists = false;
+                    await _recipeService.InsertFavRecipeOfUserIntoDatabase(recipeId, username);
+                    return Ok(new
+                    {
+                        Exists = exists,
+                        RecipeList = await _recipeService.SelectFavRecipesByUser(username)
+                    });
+                }
             }
             catch (Exception e)
             {

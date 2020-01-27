@@ -238,6 +238,19 @@ namespace RecipeSearch.RecipeService
 
             return recipeModel;
         }
+
+        internal async Task<List<int>> SelectFavRecipesByUser(string username)
+        {
+            var favRecipes = _recipeDao.SelectFavRecipesByUser(username);
+
+            return favRecipes;
+        }
+
+        internal async Task InsertFavRecipeOfUserIntoDatabase(int recipeId, string username)
+        {
+            _recipeDao.InsertFavRecipeOfUserIntoDatabase(recipeId, username);
+        }
+
         private void PopulateRecipeRates(List<Recipe> recipes)
         {
             if (recipes.Count > 0)

@@ -150,6 +150,23 @@ namespace Model.Utilities.QueryBuilder
                    $"WHERE RR.recipeid in ({string.Join(",",recipeIds)})";
         }
 
+        public string SelectFavRecipesByUser(string username)
+        {
+            var query = "SELECT " +
+                        "recipeid, " +
+                        "username " +
+                        "FROM recipefavs " +
+                        $"WHERE username = '{username}'";
+
+            return query;
+        }
+
+        public string InsertFavRecipeOfUserIntoDatabase(int recipeid, string username)
+        {
+            return "INSERT INTO recipefavs " +
+            $"VALUES({recipeid}, '{username}')";
+        }
+
         public string SelectRecipeIngredientsFromDatabase(int recipeId)
         {
             var query = "SELECT " +
@@ -315,6 +332,15 @@ namespace Model.Utilities.QueryBuilder
             //$"FETCH FIRST {fetchrows} ROW ONLY "; //take next 'x' rows
 
             return query;
+        }
+
+        public string SelectRandomRecipeIds(int count)
+        {
+            return "SELECT " +
+                   "r.id " +
+                   "FROM RECIPE R " +
+                   "ORDER BY RANDOM() " +
+                  $"LIMIT {count}";
         }
     }
 }

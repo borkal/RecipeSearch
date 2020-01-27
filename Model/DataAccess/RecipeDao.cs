@@ -81,6 +81,19 @@ namespace Model.DataAccess
             return mapper;
         }
 
+        public List<int> SelectFavRecipesByUser(string username)
+        {
+            var query = _recipeQuery.SelectFavRecipesByUser(username);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectFavRecipesByUserMapper(dbReader);
+        }
+
+        public void InsertFavRecipeOfUserIntoDatabase(int recipeId, string username)
+        {
+            var query = _recipeQuery.InsertFavRecipeOfUserIntoDatabase(recipeId, username);
+            _odbcManager.ExecuteUpdateQuery(query);
+        }
+
         public DayRecipe SelectRecipeOfTheDayRowFromDatabase()
         {
             var query = _recipeQuery.SelectRecipeOfTheDayRowFromDatabase();

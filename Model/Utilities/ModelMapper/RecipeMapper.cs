@@ -81,6 +81,18 @@ namespace Model.Utilities.ModelMapper
             return recipeRates;
         }
 
+        public List<int> SelectFavRecipesByUserMapper(OdbcDataReader dataReader)
+        {
+            var favRecipesList = new List<int>();
+
+            while (dataReader.Read())
+            {
+                favRecipesList.Add(dataReader.GetInt32(0));
+            }
+
+            return favRecipesList;
+        }
+
         public DayRecipe SelectRecipeOfTheDayRowFromDatabaseMapper(OdbcDataReader dataReader)
         {
             var dayRecipe = new DayRecipe();
