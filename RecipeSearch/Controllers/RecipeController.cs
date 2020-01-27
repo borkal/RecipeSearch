@@ -213,16 +213,15 @@ namespace RecipeSearch.Controllers
 
         [HttpGet]
         [Route("recipe/searchRandomRecipe")]
-        public async Task<IHttpActionResult> SearchRandomRecipe()
+        public async Task<IHttpActionResult> SearchRandomRecipe(int count)
         {
-            int id = randomRecipeId();
-
             try
             {
-                var result = await _recipeService.SelectRecipeModelByRecipeId(id);
+                var result = await _recipeService.GetRandomRecipes(count);
+                
                 return Ok(new
                 {
-                    recipe = result
+                    recipes = result
                 });
             }
             catch (Exception e)

@@ -125,6 +125,14 @@ namespace Model.DataAccess
             var dbReader = _odbcManager.ExecuteReadQuery(query);
             return _recipeMapper.SelectUserRateDataFromRateTableMapper(dbReader);
         }
+
+        public List<int> SelectRandomRecipeIds(int count)
+        {
+            var query = _recipeQuery.SelectRandomRecipeIds(count);
+            var dbReader = _odbcManager.ExecuteReadQuery(query);
+            return _recipeMapper.SelectRandomRecipeIds(dbReader);
+
+        }
         
     }
 }

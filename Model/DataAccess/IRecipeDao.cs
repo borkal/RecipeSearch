@@ -20,5 +20,6 @@ namespace Model.DataAccess
         void InsertRecipeRateIntoDatabase(int recipeId, int rate, string username);
         RecipeRate SelectUserRateDataFromRateTable(int id, string username);
         List<RecipeRate> SelectRecipeRates(List<int> recipeIds);
+        List<int> SelectRandomRecipeIds(int count);
     }
 }

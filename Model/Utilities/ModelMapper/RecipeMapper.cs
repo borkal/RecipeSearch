@@ -215,6 +215,19 @@ namespace Model.Utilities.ModelMapper
             return recipeRatesList;
         }
 
+        public List<int> SelectRandomRecipeIds(OdbcDataReader dataReader)
+        {
+            var recipeIds = new List<int>();
+            while (dataReader.Read())
+            {
+                var recipeId = dataReader.GetInt32(0);
+                recipeIds.Add(recipeId);
+            }
+
+            dataReader.Close();
+            return recipeIds;
+        }
+
         private List<int> ConvertStringToIntList(string text)
         {
             if(!(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text) || text == "NULL"))

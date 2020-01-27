@@ -155,6 +155,22 @@ namespace RecipeSearch.RecipeService
             return recipeList;
         }
 
+        internal async Task<List<RecipeModel>> GetRandomRecipes(int count)
+        {
+            var randomRecipeIds = _recipeDao.SelectRandomRecipeIds(count);
+            var randomRecipeList = new List<RecipeModel>();
+            randomRecipeIds.ForEach(x =>
+            {
+                var recipe = SelectRecipeModelByRecipeId(x);
+                randomRecipeList.Add(recipe.Result);
+                    
+            });
+            
+                
+
+            return randomRecipeList;
+        }
+
         internal async Task<RecipeModel> SelectRecipeModelByRecipeId(int recipeId)
         {
             var recipe = _recipeDao.SelectRecipeByRecipeId(recipeId);
