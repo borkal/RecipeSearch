@@ -239,11 +239,65 @@ namespace RecipeSearch.RecipeService
             return recipeModel;
         }
 
-        internal async Task<List<int>> SelectFavRecipesByUser(string username)
+        internal async Task<List<RecipeModel>> SelectFavRecipesByUser(string username)
         {
-            var favRecipes = _recipeDao.SelectFavRecipesByUser(username);
+            //var favRecipes = _recipeDao.SelectFavRecipesByUser(username);
 
-            return favRecipes;
+            //return favRecipes;
+
+            var recipes = _recipeDao.SelectFavRecipesByUser(username);
+
+            var recipeList = new List<RecipeModel>();
+
+            foreach (var recipe in recipes)
+            {
+                List<string> recipeIngredients = _recipeDao.SelectRecipeIngredientsFromDatabase(recipe.RecipeId);
+                List<string> recipeDescription = _recipeDao.SelectRecipeDescriptionFromDatabase(recipe.RecipeId);
+
+                IParser blog = null;
+                switch (recipe.BlogId)
+                {
+                    case (int)Blogs.FantazjeKulinarneMagdyK:
+                        blog = new FantazjeMagdyKParser(recipe.RecipeUrl);
+                        break;
+                    case (int)Blogs.KwestiaSmaku:
+                        blog = new KwestiaSmakuParser(recipe.RecipeUrl);
+                        break;
+                    case (int)Blogs.MojeDietetyczneFanaberie:
+                        blog = new MojeDietetyczneFanaberieParser(recipe.RecipeUrl);
+                        break;
+                }
+
+                PopulateRecipeRates(new List<Recipe>() { recipe });
+
+                var recipeModel = new RecipeModel
+                {
+                    Blog = recipe.BlogName,
+                    Blog_Url = recipe.Blog_Url,
+                    Description = recipeDescription.Any() ? recipeDescription : blog != null ? blog.GetDescription() : new List<string>(),
+                    Image_Url = recipe.RecipeImage,
+                    Ingredients = recipeIngredients.Any() ? recipeIngredients : blog != null ? blog.GetIngredients() : new List<string>(),
+                    Source_Url = recipe.RecipeUrl,
+                    Id = recipe.RecipeId.ToString(),
+                    Title = recipe.RecipeName,
+                    DishId = recipe.DishId,
+                    DishSubCategoryId = recipe.DishSubCategoryId,
+                    DishMainCategoryId = recipe.DishMainCategoryId,
+                    IngredientIds = recipe.IngredientIds,
+                    IngredientCategoryIds = recipe.IngredientCategoryIds,
+                    FeatureIds = recipe.FeatureIds,
+                    FeatureCategoryIds = recipe.FeatureCategoryIds,
+                    Rate = new RecipeTotalRate
+                    {
+                        Amount = recipe.TotalRecipeRate.RateAmounts,
+                        Average = recipe.TotalRecipeRate.RateAverage
+                    }
+                };
+
+                recipeList.Add(recipeModel);
+            }
+
+            return recipeList;
         }
 
         internal async Task InsertFavRecipeOfUserIntoDatabase(int recipeId, string username)

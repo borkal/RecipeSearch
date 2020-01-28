@@ -81,16 +81,47 @@ namespace Model.Utilities.ModelMapper
             return recipeRates;
         }
 
-        public List<int> SelectFavRecipesByUserMapper(OdbcDataReader dataReader)
+        public List<Recipe> SelectFavRecipesByUserMapper(OdbcDataReader dataReader)
         {
-            var favRecipesList = new List<int>();
+            //var favRecipesList = new List<int>();
 
-            while (dataReader.Read())
-            {
-                favRecipesList.Add(dataReader.GetInt32(0));
-            }
+            //while (dataReader.Read())
+            //{
+            //    favRecipesList.Add(dataReader.GetInt32(0));
+            //}
 
-            return favRecipesList;
+            //return favRecipesList;
+
+            var recipeList = new List<Recipe>();
+                while (dataReader.Read())
+                {
+                    var recipeTolist = new Recipe();
+                    recipeTolist.RecipeId = dataReader.GetInt32(0);
+                    recipeTolist.RecipeComments = dataReader[1] == DBNull.Value ? "" : dataReader.GetString(1);
+                    recipeTolist.RecipeCreateDate = dataReader[2] == DBNull.Value ? DateTime.MinValue : dataReader.GetDateTime(2);
+                    recipeTolist.RecipeImage = dataReader[3] == DBNull.Value ? "" : dataReader.GetString(3);
+                    recipeTolist.RecipeName = dataReader[4] == DBNull.Value ? "" : dataReader.GetString(4);
+                    recipeTolist.RecipeUrl = dataReader[5] == DBNull.Value ? "" : dataReader.GetString(5);
+                    recipeTolist.RecipeStatus = dataReader[6] == DBNull.Value ? 0 : dataReader.GetInt32(6);
+                    recipeTolist.Blog_Url = dataReader[7] == DBNull.Value ? "" : dataReader.GetString(7);
+                    recipeTolist.BlogId = dataReader[8] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(8));
+                    recipeTolist.BlogName = dataReader[9] == DBNull.Value ? "" : dataReader.GetString(9);
+                    recipeTolist.Rates = dataReader[10] == DBNull.Value
+                    ? new List<string>()
+                    : dataReader[10].ToString().Split(',').Select(x => x).ToList();
+                    recipeTolist.DishId = dataReader[11] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(11));
+                    recipeTolist.DishSubCategoryId = dataReader[12] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(12));
+                    recipeTolist.DishMainCategoryId = dataReader[13] == DBNull.Value ? 0 : Convert.ToInt32(dataReader.GetValue(13));
+                    recipeTolist.IngredientIds = dataReader[14] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(14).ToString());
+                    recipeTolist.IngredientCategoryIds = dataReader[15] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(15).ToString());
+                    recipeTolist.FeatureIds = dataReader[16] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(16).ToString());
+                    recipeTolist.FeatureCategoryIds = dataReader[17] == DBNull.Value ? new List<int>() : ConvertStringToIntList(dataReader.GetValue(17).ToString());
+
+                    recipeList.Add(recipeTolist);
+                }
+
+            dataReader.Close();
+            return recipeList;
         }
 
         public DayRecipe SelectRecipeOfTheDayRowFromDatabaseMapper(OdbcDataReader dataReader)

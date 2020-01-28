@@ -21,7 +21,7 @@ namespace Model.DataAccess
         RecipeRate SelectUserRateDataFromRateTable(int id, string username);
         List<RecipeRate> SelectRecipeRates(List<int> recipeIds);
         List<int> SelectRandomRecipeIds(int count);
-        List<int> SelectFavRecipesByUser(string username);
+        List<Recipe> SelectFavRecipesByUser(string username);
         void InsertFavRecipeOfUserIntoDatabase(int recipeId, string username);
     }
 }

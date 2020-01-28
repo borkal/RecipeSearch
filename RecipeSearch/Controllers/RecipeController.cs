@@ -38,6 +38,27 @@ namespace RecipeSearch.Controllers
             return id;
         }
 
+
+        //check.Contains(recipeId)
+        private bool checkExistsValue(int recipeId, string username)
+        {
+            var check = _recipeDao.SelectFavRecipesByUser(username);
+            bool exists = false;
+            foreach (var recipe in check)
+            {
+                //if (recipe.RecipeId == recipeId)
+                if (recipe.RecipeId == recipeId)
+                {
+                    exists = true;
+                }
+                else
+                {
+                    exists = false;
+                }
+            }
+            return exists;
+        }
+
         [HttpGet]
         public async Task<IHttpActionResult> SearchRecipes(string search, int count,
             [FromUri] int[] dishIds,
@@ -341,10 +362,10 @@ namespace RecipeSearch.Controllers
         {
             try
             {
-                var check = _recipeDao.SelectFavRecipesByUser(username);
                 bool exists;
+                bool test = checkExistsValue(recipeId, username);
 
-                if (check.Contains(recipeId))
+                if (test)
                 {
                     exists = true;
                     return Ok(new

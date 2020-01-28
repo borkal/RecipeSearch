@@ -81,7 +81,7 @@ namespace Model.DataAccess
             return mapper;
         }
 
-        public List<int> SelectFavRecipesByUser(string username)
+        public List<Recipe> SelectFavRecipesByUser(string username)
         {
             var query = _recipeQuery.SelectFavRecipesByUser(username);
             var dbReader = _odbcManager.ExecuteReadQuery(query);

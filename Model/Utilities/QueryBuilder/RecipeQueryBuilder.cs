@@ -152,11 +152,52 @@ namespace Model.Utilities.QueryBuilder
 
         public string SelectFavRecipesByUser(string username)
         {
+            //var query = "SELECT " +
+            //            "recipeid, " +
+            //            "username " +
+            //            "FROM recipefavs " +
+            //            $"WHERE username = '{username}'";
+
             var query = "SELECT " +
-                        "recipeid, " +
-                        "username " +
-                        "FROM recipefavs " +
-                        $"WHERE username = '{username}'";
+                     "R.id, " +
+                     "R.comments, " +
+                     "R.createdate, " +
+                     "R.image, " +
+                     "R.name, " +
+                     "R.url, " +
+                     "R.status, " +
+                     "RS.canonicalurl, " +
+                     "RS.id, RS.name, " +
+                     "Replace(Replace((CAST(array_agg(RR.rate) AS VARCHAR)), '}', ''), '{', '') as reciperates, " +
+                     "D.id as dishId, " +
+                     "DS.id as dishSubCategoryId, " +
+                     "DM.id as dishMainCategoryId, " +
+                     "Replace(Replace((CAST(array_agg(distinct I2.id) AS VARCHAR)), '}', ''), '{', '') as ingredientIds, " +
+                     "Replace(Replace((CAST(array_agg(distinct IC.id) AS VARCHAR)), '}', ''), '{', '') as ingridientCategoryIds, " +
+                     "Replace(Replace((CAST(array_agg(distinct F2.id) AS VARCHAR)), '}', ''), '{', '') as featureIds, " +
+                     "Replace(Replace((CAST(array_agg(distinct FC.id) AS VARCHAR)), '}', ''), '{', '') as featureCategoryIds " +
+                     "FROM recipe R " +
+                     "LEFT JOIN recipesource RS on R.source_id = RS.id " +
+                     "LEFT JOIN recipeelement RE on R.id = RE.recipe_id " +
+                     "LEFT JOIN reciperate RR on RR.recipeid = R.id " +
+                     "LEFT JOIN dish D on R.dish_id = D.id " +
+                     "LEFT JOIN dishCategory DS on D.category_id = DS.id " +
+                     "LEFT JOIN dishCategory DM on DS.parent_id = DM.id " +
+                     "LEFT JOIN ingredient I on RE.ingredient_id = I.id " +
+                     "JOIN(SELECT RE2.recipe_id, I2.id, I2.name FROM recipeelement RE2 " +
+                     "LEFT JOIN ingredient I2 on RE2.ingredient_id = I2.id) I2 on I2.recipe_id = RE.recipe_id " +
+                     "LEFT JOIN ingredient_alternativenames IAN on I.id = IAN.ingredient_id " +
+                     "LEFT JOIN ingredient_ingredientcategory Ixref on I2.id = Ixref.ingredient_id " +
+                     "LEFT JOIN ingredientcategory IC on Ixref.categories_id = IC.id " +
+                     "LEFT JOIN recipe_feature RF on RF.recipe_id = R.id " +
+                     "LEFT JOIN feature F on RF.feature_id = F.id " +
+                     "LEFT JOIN(SELECT RF2.recipe_id, F2.id, F2.category_id " +
+                     "FROM recipe_feature RF2 " +
+                     "LEFT JOIN feature F2 on RF2.feature_id = F2.id) F2 on F2.recipe_id = R.id " +
+                     "LEFT JOIN featurecategory FC on FC.id = F2.category_id " +
+                     "LEFT JOIN recipefavs RFA on R.id = RFA.recipeid " +
+                     $"WHERE RFA.username = '{username}'" +
+                     "GROUP BY R.id, RS.id, D.id, DS.id, DM.id, RFA.username";
 
             return query;
         }
