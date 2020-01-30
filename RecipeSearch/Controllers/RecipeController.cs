@@ -326,11 +326,26 @@ namespace RecipeSearch.Controllers
         {
             try
             {
+                bool test = false;
                 var result = await _recipeService.SelectUserRateDataFromRateTable(id, username);
-                return Ok(new
+                if (result.recipeId != 0 && result.recipeRate != 0 && result.userName != null)
                 {
-                    recipeRate = result
-                });
+                    test = true;
+                    return Ok(new
+                    {
+                        exists = test,
+                        recipeRate = result
+                    });
+                }
+                else
+                {
+                    return Ok(new
+                    {
+                        exists = test,
+                        recipeRate = result
+                    });
+                }
+
             }
             catch (Exception e)
             {
@@ -356,6 +371,41 @@ namespace RecipeSearch.Controllers
             }
         }
 
+        //[HttpPost]
+        //[Route("recipe/InsertFavRecipe")]
+        //public async Task<IHttpActionResult> InsertFavRecipe(int recipeId, string username)
+        //{
+        //    try
+        //    {
+        //        bool exists;
+        //        bool test = checkExistsValue(recipeId, username);
+
+        //        if (test)
+        //        {
+        //            exists = true;
+        //            return Ok(new
+        //            {
+        //                message = $"User {username} already added recipe with id {recipeId} to favourite recipes !",
+        //                Exists = exists
+        //            });
+        //        }
+        //        else
+        //        {
+        //            exists = false;
+        //            await _recipeService.InsertFavRecipeOfUserIntoDatabase(recipeId, username);
+        //            return Ok(new
+        //            {
+        //                Exists = exists,
+        //                RecipeList = await _recipeService.SelectFavRecipesByUser(username)
+        //            });
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
+
         [HttpPost]
         [Route("recipe/InsertFavRecipe")]
         public async Task<IHttpActionResult> InsertFavRecipe(int recipeId, string username)
@@ -363,9 +413,9 @@ namespace RecipeSearch.Controllers
             try
             {
                 bool exists;
-                bool test = checkExistsValue(recipeId, username);
+                //bool test = checkExistsValue(recipeId, username);
 
-                if (test)
+                if (checkExistsValue(recipeId, username) == true)
                 {
                     exists = true;
                     return Ok(new
@@ -381,7 +431,7 @@ namespace RecipeSearch.Controllers
                     return Ok(new
                     {
                         Exists = exists,
-                        RecipeList = await _recipeService.SelectFavRecipesByUser(username)
+                        //RecipeList = await _recipeService.SelectFavRecipesByUser(username)
                     });
                 }
             }
